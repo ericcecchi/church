@@ -18,18 +18,20 @@
 </head>
 <body>
 <%= render :partial => "layouts/header" %>
-<div class="alert alert-block alert-info hide">
-<a class="close" data-dismiss="alert">×</a>
-<h4 class="alert-heading">Alert</h4>
-<%= notice %>
-</div>
-<div class="alert alert-block alert-error hide">
-<a class="close" data-dismiss="alert">×</a>
-<h4 class="alert-heading">Alert</h4>
-<%= alert %>
-</div>
 
 <div class="container">
+<% if notice %>
+<div class="alert alert-block alert-info">
+<a class="close" data-dismiss="alert">×</a>
+<%= notice %>
+</div>
+<% end %>
+<% if alert %>
+<div class="alert alert-block alert-error">
+<a class="close" data-dismiss="alert">×</a>
+<%= alert %>
+</div>
+<% end %>
 <%= yield %>
 <%= render :partial => "layouts/footer" %>
 </div>

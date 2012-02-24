@@ -3,7 +3,8 @@ Church::Application.routes.draw do
   get "internal/rails"
   devise_for :users
   resources :users, :only => :show
-
+  match '/:name', :to => "users#show", :as => "short_profile"
+  
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

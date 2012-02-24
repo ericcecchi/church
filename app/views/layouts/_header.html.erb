@@ -10,6 +10,7 @@
       <div class="nav-collapse">
         <ul class="nav">
           <li><%= link_to "home", root_path %></li>
+          <% if user_signed_in? %>
           <li class="dropdown">
             <a href="#" 
               class="dropdown-toggle"
@@ -21,14 +22,15 @@
                   <li><%= link_to "rails", internal_rails_path %></li>
             </ul>
             </li>
+          <% end %>
         </ul>
         <ul class="nav pull-right">
           <% if user_signed_in? %>
-          <li><%= link_to current_user.name, current_user %></li>
+          <li><%= link_to current_user.name, short_profile_path(current_user.name) %></li>
           <li class="divider-vertical"></li>
           <li><%= link_to "sign out", destroy_user_session_path, :method => :delete %></li>
           <% else %>
-          <li><%= link_to "sign up", new_user_registration_path %></li>
+          <li><%= link_to "create account", new_user_registration_path %></li>
           <li class="divider-vertical"></li>
           <li><%= link_to "sign in", new_user_session_path %></li>
           <% end %>
