@@ -1,4 +1,8 @@
 # Rails setup guide
+This guide was generated automagically by the server from a Markdown document. For real. You can download it [here](/md/rails.md) if you don't believe me.
+
+This guide is really just a summary of commands to get a basic functional app with user authentication. I've also included a list of tools I've found so far that seem to be incredibly useful in Rails development. For a much more detailed tutorial, go [here](https://github.com/RailsApps/rails3-mongoid-devise/wiki/Tutorial).
+
 ## Git ridin' teh rails
 ### 1. [Git](//git-scm.com/) it.
 
@@ -44,7 +48,7 @@ $ /usr/bin/ruby -e "$(curl -fsSL https://raw.github.com/gist/323731)"
 
 ~~~.console
 $ brew install mongodb
-$ sudo mkdir -r /data/db # Why didn't the installer do this? I dunno.
+$ sudo mkdir -p /data/db # Why didn't the installer do this? I dunno.
 $ sudo chown `id -u` /data/db
 $ mongod # Start the database daemon. Leave it running in a terminal.
 ~~~
@@ -63,6 +67,19 @@ $ cd myapp
 $ rails generate mongoid:config
 ~~~
 
+### 10. [Devise.](//github.com/plataformatec/devise)
+
+~~~.console
+$ rails generate devise:install
+$ rails generate devise User
+~~~
+
+To prevent password logging, modify the file **config/application.rb** to include:
+
+~~~
+config.filter_parameters += [:password, :password_confirmation]
+~~~
+
 ## Skeleton
 
 ### [MongoDB](//www.mongodb.org/)
@@ -75,8 +92,7 @@ No more migrations. From model to database.
 Quick and easy user authenication.
 
 ### [Twitter bootstrap](//twitter.github.com/bootstrap)
-HTML5, CSS3, clean markup, and it's quite pretty.
-
+HTML5, CSS3, (fairly) clean markup, and it's quite pretty.
 
 ## Other Stuff
 ### [Markdown + Rails = Heaven](http://railscasts.com/episodes/272-markdown-with-redcarpet)
@@ -99,3 +115,6 @@ Add this line:
 ~~~.console
 gem: --no-ri --no-rdoc
 ~~~
+
+### [Github for Mac](//mac.github.com/)
+### [Church on Github](https://github.com/hueyha/church)
