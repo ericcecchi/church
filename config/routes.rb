@@ -1,7 +1,8 @@
 Church::Application.routes.draw do
-  get "internal/rails"
-
   root :to => "home#index"
+  get "internal/rails"
+  devise_for :users
+  resources :users, :only => :show
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

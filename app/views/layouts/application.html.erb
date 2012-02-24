@@ -17,8 +17,21 @@
   <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
 </head>
 <body>
+<%= render :partial => "layouts/header" %>
+<div class="alert alert-block alert-info hide">
+<a class="close" data-dismiss="alert">×</a>
+<h4 class="alert-heading">Alert</h4>
+<%= notice %>
+</div>
+<div class="alert alert-block alert-error hide">
+<a class="close" data-dismiss="alert">×</a>
+<h4 class="alert-heading">Alert</h4>
+<%= alert %>
+</div>
 
+<div class="container">
 <%= yield %>
-
+<%= render :partial => "layouts/footer" %>
+</div>
 </body>
 </html>
