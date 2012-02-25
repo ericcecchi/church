@@ -144,28 +144,28 @@ gem: --no-ri --no-rdoc
 If this is your first install, automatically load on login with:
 
 ~~~.console
-mkdir -p ~/Library/LaunchAgents
-cp /usr/local/Cellar/mongodb/2.0.2-x86_64/homebrew.mxcl.mongodb.plist ~/Library/LaunchAgents/
-launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.mongodb.plist
+$ mkdir -p ~/Library/LaunchAgents
+$ cp /usr/local/Cellar/mongodb/2.0.2-x86_64/homebrew.mxcl.mongodb.plist ~/Library/LaunchAgents/
+$ launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.mongodb.plist
 ~~~
 
 If this is an upgrade and you already have the homebrew.mxcl.mongodb.plist loaded:
 
 ~~~
-launchctl unload -w ~/Library/LaunchAgents/homebrew.mxcl.mongodb.plist
-cp /usr/local/Cellar/mongodb/2.0.2-x86_64/homebrew.mxcl.mongodb.plist ~/Library/LaunchAgents/
-launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.mongodb.plist
+$ launchctl unload -w ~/Library/LaunchAgents/homebrew.mxcl.mongodb.plist
+$ cp /usr/local/Cellar/mongodb/2.0.2-x86_64/homebrew.mxcl.mongodb.plist ~/Library/LaunchAgents/
+$ launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.mongodb.plist
 ~~~
 
 Or start it manually:
 
 ~~~
-mongod run --config /usr/local/Cellar/mongodb/2.0.2-x86_64/mongod.conf
+$ mongod run --config /usr/local/Cellar/mongodb/2.0.2-x86_64/mongod.conf
 ~~~
 
 The launchctl plist above expects the config file to be at /usr/local/etc/mongod.conf.
 If this is a first install, you can copy one from /usr/local/Cellar/mongodb/2.0.2-x86_64/mongod.conf:
 
 ~~~
-cp /usr/local/Cellar/mongodb/2.0.2-x86_64/mongod.conf /usr/local/etc/mongod.conf
+$ cp /usr/local/Cellar/mongodb/2.0.2-x86_64/mongod.conf /usr/local/etc/mongod.conf
 ~~~
