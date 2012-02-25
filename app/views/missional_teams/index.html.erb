@@ -1,0 +1,21 @@
+<h1>Listing missional_teams</h1>
+
+<table>
+  <tr>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @missional_teams.each do |missional_team| %>
+  <tr>
+    <td><%= link_to 'Show', missional_team %></td>
+    <td><%= link_to 'Edit', edit_missional_team_path(missional_team) %></td>
+    <td><%= link_to 'Destroy', missional_team, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Missional team', new_missional_team_path %>

@@ -1,0 +1,21 @@
+<h1>Listing community_groups</h1>
+
+<table>
+  <tr>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @community_groups.each do |community_group| %>
+  <tr>
+    <td><%= link_to 'Show', community_group %></td>
+    <td><%= link_to 'Edit', edit_community_group_path(community_group) %></td>
+    <td><%= link_to 'Destroy', community_group, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Community group', new_community_group_path %>

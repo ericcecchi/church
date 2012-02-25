@@ -5,6 +5,10 @@ class User
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable# , :omniauthable
   has_many :authentications, :dependent => :delete
+  belongs_to :community_group
+  has_and_belongs_to_many :missional_teams
+  has_and_belongs_to_many :roles
+  has_one :address
   
   ## Database authenticatable
   field :email,              :type => String, :null => false, :default => ""
@@ -45,32 +49,38 @@ class User
   field :first_name, :type => String, :null => false, :default => ""
   field :last_name, :type => String, :null => false, :default => ""
   
+  ## Church
+  field :birthday, :type => Date
+  field :phone, :type => Integer
+  field :twitter_username => String
+  field :facebook_url => String
+  
   validates_presence_of :first_name, :last_name, :email, :username
   validates_uniqueness_of :username, :email, :case_sensitive => false
   attr_accessible :username, :email, :first_name, :last_name, :password, :password_confirmation, :remember_me
   
-#   def apply_omniauth(omniauth)
-#     self.email = omniauth['user_info']['email'] if email.blank?
-#     apply_trusted_services(omniauth) if self.new_record?
-#   end
-#   def apply_trusted_services(omniauth) 
-#     user_info = omniauth['user_info']
-#     if omniauth['extra'] && omniauth['extra']['user_hash']
-#       user_info.merge!(omniauth['extra']['user_hash'])
-#     end 
+  def apply_omniauth(omniauth)
+    self.email = omniauth['user_info']['email']#  if email.blank?
+    apply_trusted_services(omniauth) if self.new_record?
+  end
+  def apply_trusted_services(omniauth) 
+    user_info = omniauth['user_info']
+    if omniauth['extra'] && omniauth['extra']['user_hash']
+      user_info.merge!(omniauth['extra']['user_hash'])
+    end 
 #     if self.username.blank?
-#       self.username = user_info['nickname'] unless user_info['nickname'].blank?
+      self.username = user_info['username'] unless user_info['username'].blank?
 #     end
-#     if self.first_name.blank?
-#       self.first_name = user_info['first_name'] unless user_info['first_name'].blank?
-#     end
-#     if self.last_name.blank?
-#       self.last_name = user_info['last_name'] unless user_info['last_name'].blank?
-#     end  
-#     if self.email.blank?
-#       self.email = user_info['email'] unless user_info['email'].blank?
-#     end 
-#     self.password, self.password_confirmation = String::RandomString(16)  
-#     self.confirmed_at, self.confirmation_sent_at = Time.now 
-#   end
+    if self.first_name.blank?
+      self.first_name = user_info['first_name'] unless user_info['first_name'].blank?
+    end
+    if self.last_name.blank?
+      self.last_name = user_info['last_name'] unless user_info['last_name'].blank?
+    end  
+    if self.email.blank?
+      self.email = user_info['email'] unless user_info['email'].blank?
+    end 
+    self.password, self.password_confirmation = String::RandomString(16)  
+    self.confirmed_at, self.confirmation_sent_at = Time.now 
+  end
 end

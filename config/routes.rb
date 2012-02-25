@@ -1,6 +1,9 @@
 Church::Application.routes.draw do
+  resources :community_groups, path: "community"
+  resources :missional_teams, path: "mission"
   resources :authentications
   match '/auth/:provider/callback', to: 'authentications#create'
+  match "/auth/failure", to: "authentications#index"
   get "internal/rails"
   devise_for :users, :path_names => { :sign_up => "register", :sign_in => "login", sign_out: "logout" }, :path => 'accounts', :controllers => { :omniauth_callbacks => 'users/omniauth_callbacks' }
   resources :users, :only => :show
