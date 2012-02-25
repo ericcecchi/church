@@ -60,7 +60,7 @@ class User
   attr_accessible :username, :email, :first_name, :last_name, :password, :password_confirmation, :remember_me
   
   def apply_omniauth(omniauth)
-    self.email = omniauth['user_info']['email']#  if email.blank?
+    self.email = omniauth['user_info']['email'] if email.blank?
     apply_trusted_services(omniauth) if self.new_record?
   end
   def apply_trusted_services(omniauth) 
@@ -69,7 +69,7 @@ class User
       user_info.merge!(omniauth['extra']['user_hash'])
     end 
 #     if self.username.blank?
-      self.username = user_info['username'] unless user_info['username'].blank?
+      self.username = user_info['nickname'] unless user_info['nickname'].blank?
 #     end
     if self.first_name.blank?
       self.first_name = user_info['first_name'] unless user_info['first_name'].blank?

@@ -6,15 +6,22 @@ class AuthenticationsController < ApplicationController
 	def create
 # 	  render :text => request.env["omniauth.auth"].to_yaml
 	  omniauth = request.env["omniauth.auth"]
-	  authentication = Authentication.where(provider: omniauth['provider'], uid: omniauth['uid']).first
+	  authentication = Authentication.first(conditions: {provider: omniauth['provider'], uid: omniauth['uid']} )
 	  if authentication
 	    flash[:notice] = "Signed in successfully."
 	    sign_in_and_redirect(:user, authentication.user)
-	  else
+	  elsif current_user
 		current_user.authentications.find_or_create_by(provider: omniauth['provider'], uid: omniauth['uid'])
 		current_user.apply_trusted_services(omniauth)
 		flash[:notice] = "Authentication successful."
 		redirect_to authentications_url
+	  else
+	    user = User.new
+# 		user.apply_trusted_services(omniauth)
+	    user.authentications.build(:provider => omniauth ['provider'], :uid => omniauth['uid'])
+	    user.save!
+	    flash[:notice] = "Signed in successfully."
+	    sign_in_and_redirect(:user, user)
 	  end
 	end
 	
