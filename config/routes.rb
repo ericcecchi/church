@@ -5,6 +5,7 @@ Church::Application.routes.draw do
   match '/auth/:provider/callback', to: 'authentications#create'
   match "/auth/failure", to: "authentications#index"
   get "internal/rails"
+  get "internal/admin_dash"
   devise_for :users, :path_names => { :sign_up => "register", :sign_in => "login", sign_out: "logout" }, :path => 'accounts', :controllers => { :omniauth_callbacks => 'users/omniauth_callbacks' }
   resources :users, :only => :show
   match '/:username', :to => "users#show", :as => "short_profile"
