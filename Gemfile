@@ -51,7 +51,9 @@ gem "launchy", ">= 2.0.5", :group => :test
 gem "bson_ext", ">= 1.5.2"
 gem 'mongoid', '= 2.4.5'
 gem "devise", ">= 2.0.4"
+gem "omniauth-twitter"
+gem "omniauth-facebook"
 gem "bootstrap-sass", "~> 2.0.1"
 gem "redcarpet"
-gem "nokogiri"
-gem "albino"
+# gem "nokogiri"
+# gem "albino"

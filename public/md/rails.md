@@ -3,6 +3,8 @@ This guide was generated automagically by the server from a Markdown document. F
 
 This guide is really just a summary of commands to get a basic functional app with user authentication. I've also included a list of tools I've found so far that seem to be incredibly useful in Rails development. For a much more detailed tutorial, go [here](https://github.com/RailsApps/rails3-mongoid-devise/wiki/Tutorial).
 
+### [Church on Github](https://github.com/hueyha/church)
+
 ## Git ridin' teh rails
 ### 1. [Git](//git-scm.com/) it.
 
@@ -61,13 +63,22 @@ $ rails new myapp -m https://github.com/RailsApps/rails3-application-templates/r
 $ cd myapp
 ~~~
 
-### 9. [Mongoid.](//mongoid.org/)
+### 9. WHAM! BOOM! [POW!](//pow.cx)
+Make your app available at myapp.dev.
+
+~~~.console
+$ gem install powder
+$ powder install
+$ powder link myapp
+~~~
+
+### 10. [Mongoid.](//mongoid.org/)
 
 ~~~.console
 $ rails generate mongoid:config
 ~~~
 
-### 10. [Devise.](//github.com/plataformatec/devise)
+### 11. [Devise.](//github.com/plataformatec/devise)
 
 ~~~.console
 $ rails generate devise:install
@@ -95,19 +106,32 @@ Quick and easy user authenication.
 HTML5, CSS3, (fairly) clean markup, and it's quite pretty.
 
 ## Other Stuff
-### [Markdown + Rails = Heaven](http://railscasts.com/episodes/272-markdown-with-redcarpet)
+### [Powder](https://github.com/Rodreegez/powder)
+As if using Pow wasn't easy enough already.
+
+~~~.console
+$ gem install powder
+~~~
+
+### [Github for Mac](//mac.github.com/)
+They almost make it too easy.
+
+### [Markdown + Rails = Heaven](//railscasts.com/episodes/272-markdown-with-redcarpet)
+
+### [iA Writer](//www.iawriter.com/)
+What?!? It's not free! I paid $2 for it, but it's definitely worth whatever they're charging for it now.
 
 ### Use the right version of Ruby
 ~~~.console
-rvm --default 1.9.3 # Changes default for rvm
-cd /path/to/app
-rvm --rvmrc --create 1.9.3 # Creates .rvmrc for project
+$ rvm --default 1.9.3 # Changes default for rvm
+$ cd /path/to/app
+$ rvm --rvmrc --create 1.9.3 # Creates .rvmrc for project
 ~~~
 
 ### No docs when installing gems
 ~~~.console
-cd ~
-mate .gemrc
+$ cd ~
+$ mate .gemrc
 ~~~
 
 Add this line:
@@ -115,6 +139,3 @@ Add this line:
 ~~~.console
 gem: --no-ri --no-rdoc
 ~~~
-
-### [Github for Mac](//mac.github.com/)
-### [Church on Github](https://github.com/hueyha/church)

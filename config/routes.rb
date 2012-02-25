@@ -1,9 +1,11 @@
 Church::Application.routes.draw do
-  root :to => "home#index"
+  resources :authentications
+  match '/auth/:provider/callback', to: 'authentications#create'
   get "internal/rails"
-  devise_for :users
+  devise_for :users, :path_names => { :sign_up => "register", :sign_in => "login", sign_out: "logout" }, :path => 'accounts', :controllers => { :omniauth_callbacks => 'users/omniauth_callbacks' }
   resources :users, :only => :show
-  match '/:name', :to => "users#show", :as => "short_profile"
+  match '/:username', :to => "users#show", :as => "short_profile"
+  root :to => "home#index"
   
   # The priority is based upon order of creation:
   # first created -> highest priority.

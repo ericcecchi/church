@@ -1,10 +1,11 @@
 class User
   include Mongoid::Document
   # Include default devise modules. Others available are:
-  # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
+  # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and 
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
-
+         :recoverable, :rememberable, :trackable, :validatable# , :omniauthable
+  has_many :authentications, :dependent => :delete
+  
   ## Database authenticatable
   field :email,              :type => String, :null => false, :default => ""
   field :encrypted_password, :type => String, :null => false, :default => ""
@@ -40,10 +41,36 @@ class User
   ## Token authenticatable
   # field :authentication_token, :type => String
   
-  field :name, :case_sensitive => false
-  index :name
-  validates_presence_of :name
-  validates_uniqueness_of :name, :email, :case_sensitive => false
-  attr_accessible :name, :email, :password, :password_confirmation, :remember_me
+  field :username, :type => String, :null => false, :default => ""
+  field :first_name, :type => String, :null => false, :default => ""
+  field :last_name, :type => String, :null => false, :default => ""
   
+  validates_presence_of :first_name, :last_name, :email, :username
+  validates_uniqueness_of :username, :email, :case_sensitive => false
+  attr_accessible :username, :email, :first_name, :last_name, :password, :password_confirmation, :remember_me
+  
+#   def apply_omniauth(omniauth)
+#     self.email = omniauth['user_info']['email'] if email.blank?
+#     apply_trusted_services(omniauth) if self.new_record?
+#   end
+#   def apply_trusted_services(omniauth) 
+#     user_info = omniauth['user_info']
+#     if omniauth['extra'] && omniauth['extra']['user_hash']
+#       user_info.merge!(omniauth['extra']['user_hash'])
+#     end 
+#     if self.username.blank?
+#       self.username = user_info['nickname'] unless user_info['nickname'].blank?
+#     end
+#     if self.first_name.blank?
+#       self.first_name = user_info['first_name'] unless user_info['first_name'].blank?
+#     end
+#     if self.last_name.blank?
+#       self.last_name = user_info['last_name'] unless user_info['last_name'].blank?
+#     end  
+#     if self.email.blank?
+#       self.email = user_info['email'] unless user_info['email'].blank?
+#     end 
+#     self.password, self.password_confirmation = String::RandomString(16)  
+#     self.confirmed_at, self.confirmation_sent_at = Time.now 
+#   end
 end
