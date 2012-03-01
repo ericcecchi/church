@@ -29,11 +29,9 @@
           <% if user_signed_in? %>
           <li><%= link_to current_user.username, short_profile_path(current_user.username) %></li>
           <li class="divider-vertical"></li>
-          <li><%= link_to "log out", destroy_user_session_path, :method => :delete %></li>
+          <li><%= link_to "sign out", destroy_user_session_path, :method => :delete %></li>
           <% else %>
-          <li><%= link_to "register", new_user_registration_path %></li>
-          <li class="divider-vertical"></li>
-          <li><%= link_to "log in", authentications_path %></li>
+          <li><%= link_to "sign in", authentications_path %></li>
           <% end %>
         </ul>
       </div><!--/.nav-collapse --> 
