@@ -6,7 +6,7 @@ Church::Application.routes.draw do
   match "/auth/failure", to: "authentications#index"
   get "internal/rails"
   get "internal/admin_dash"
-  devise_for :users, :path_names => { :sign_up => "register", :sign_in => "login", sign_out: "logout" }, :path => 'accounts', :controllers => { :omniauth_callbacks => 'users/omniauth_callbacks' }
+  devise_for :users, :path_names => { :sign_up => "register", :sign_in => "login", sign_out: "logout" }, :controllers => { :registrations => 'accounts' }
   resources :users, :only => :show
   match '/:username', :to => "users#show", :as => "short_profile"
   root :to => "home#index"

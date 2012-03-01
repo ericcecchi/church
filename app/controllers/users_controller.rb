@@ -1,15 +1,9 @@
 class UsersController < ApplicationController
-before_filter :authenticate_user!
-rescue_from NoMethodError, :with => :no_user
-
   def show
+    if not @user
+      flash[:alert] = "The page you are looking for does not exist."
+      redirect_to :root
+    end
     @user = User.first(conditions: {username: params[:username].downcase } )
-  end
-  
-  private
- 
-  def no_user
-    flash[:alert] = "The user \"" + params[:username] + "\" does not exist."
-    redirect_to :root
   end
 end

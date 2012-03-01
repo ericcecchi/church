@@ -1,8 +1,8 @@
 class User
   include Mongoid::Document
   # Include default devise modules. Others available are:
-  # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and 
-  devise :database_authenticatable, :registerable,
+  # :token_authenticatable, :encryptable,  :lockable, :timeoutable and 
+  devise :database_authenticatable, :registerable, :confirmable,
          :recoverable, :rememberable, :trackable, :validatable# , :omniauthable
   has_many :authentications, :dependent => :delete
   belongs_to :community_group
@@ -32,10 +32,10 @@ class User
   # field :password_salt, :type => String
 
   ## Confirmable
-  # field :confirmation_token,   :type => String
-  # field :confirmed_at,         :type => Time
-  # field :confirmation_sent_at, :type => Time
-  # field :unconfirmed_email,    :type => String # Only if using reconfirmable
+  field :confirmation_token,   :type => String
+  field :confirmed_at,         :type => Time
+  field :confirmation_sent_at, :type => Time
+  field :unconfirmed_email,    :type => String # Only if using reconfirmable
 
   ## Lockable
   # field :failed_attempts, :type => Integer, :default => 0 # Only if lock strategy is :failed_attempts
@@ -45,26 +45,29 @@ class User
   ## Token authenticatable
   # field :authentication_token, :type => String
   
-  field :username, :type => String, :null => false, :default => ""
-  field :first_name, :type => String, :null => false, :default => ""
-  field :last_name, :type => String, :null => false, :default => ""
+  field :username, 		:type => String, :null => false, :default => ""
+  field :first_name, 	:type => String, :null => false, :default => ""
+  field :last_name, 	:type => String, :null => false, :default => ""
   
   ## Church
-  field :birthday, :type => Date
-  field :phone, :type => Integer
-  field :twitter_username => String
-  field :facebook_url => String
+  field :birthday, 			:type => Date, :null => false, :default => ""
+  field :phone, 			:type => Integer, :null => false, :default => ""
+  field :twitter_username, 	:type => String, :null => false, :default => ""
+  field :facebook_url, 		:type => String, :null => false, :default => ""
+  field :user_info, 		:type => String, :null => false, :default => ""
   
-  validates_presence_of :first_name, :last_name, :email, :username
-  validates_uniqueness_of :username, :email, :case_sensitive => false
+  validates_presence_of :username, :email, :first_name, :last_name, :password
+  validates_uniqueness_of :username, :case_sensitive => false
   attr_accessible :username, :email, :first_name, :last_name, :password, :password_confirmation, :remember_me
   
   def apply_omniauth(omniauth)
-    self.email = omniauth['user_info']['email'] if email.blank?
-    apply_trusted_services(omniauth) if self.new_record?
+    self.email = omniauth['info']['email'] if email.blank?
+    apply_trusted_services(omniauth)#  if self.new_record?
   end
   def apply_trusted_services(omniauth) 
-    user_info = omniauth['user_info']
+    user_info = omniauth['info']
+    self.twitter_username = user_info['nickname'] unless user_info['nickname'].blank?
+    self.facebook_url = user_info['url'] unless user_info['url'].blank?
     if omniauth['extra'] && omniauth['extra']['user_hash']
       user_info.merge!(omniauth['extra']['user_hash'])
     end 
@@ -80,7 +83,7 @@ class User
     if self.email.blank?
       self.email = user_info['email'] unless user_info['email'].blank?
     end 
-    self.password, self.password_confirmation = String::RandomString(16)  
+#     self.password, self.password_confirmation = SecureRandom.hex(10)  
     self.confirmed_at, self.confirmation_sent_at = Time.now 
   end
 end
