@@ -1,3 +1,3 @@
-class Leader < Role
+class Address
   include Mongoid::Document
 end

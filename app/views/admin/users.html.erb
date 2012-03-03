@@ -1,0 +1,20 @@
+<div class="row-fluid">
+  <%= render 'sidebar' %>
+  <div class="span9">
+    <h1>Manage Users</h1>
+    <table class="table table-striped table-bordered">
+      <thead>
+        <th>Name</th>
+        <th>Roles</th>
+        <th></th>
+      </thead>
+      <% User.all.each do |user| %>
+        <tr>
+          <td><%= link_to user.name, edit_user_registration_path(user) %></td>
+          <td><%= user.roles.join(', ') %></td>
+          <td><%= mail_to user.email, "Email" %></td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+</div>

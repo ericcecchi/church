@@ -1,9 +1,11 @@
 class AccountsController < Devise::RegistrationsController  
   def create
     super
-    omniauth = session[:omniauth] 
-    @user.save!
-    @user.authentications.create!(provider: omniauth['provider'], uid: omniauth['uid'])
+    if session[:omniauth]
+      omniauth = session[:omniauth] 
+      @user.save!
+      @user.authentications.create!(provider: omniauth['provider'], uid: omniauth['uid'])
+    end
   end
   
   private

@@ -1,14 +1,15 @@
 class User
   include Mongoid::Document
+  before_save :save_username, :save_name
   # Include default devise modules. Others available are:
-  # :token_authenticatable, :encryptable,  :lockable, :timeoutable and 
-  devise :database_authenticatable, :registerable, :confirmable,
-         :recoverable, :rememberable, :trackable, :validatable# , :omniauthable
+  # :token_authenticatable, :encryptable,  :lockable, :timeoutable, :confirmable, :omniauthable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :trackable, :validatable
   has_many :authentications, :dependent => :delete
   belongs_to :community_group
   has_and_belongs_to_many :missional_teams
   has_and_belongs_to_many :roles
-  has_one :address
+  embeds_one :address
   
   ## Database authenticatable
   field :email,              :type => String, :null => false, :default => ""
@@ -45,39 +46,52 @@ class User
   ## Token authenticatable
   # field :authentication_token, :type => String
   
-  field :username, 		:type => String, :null => false, :default => ""
-  field :first_name, 	:type => String, :null => false, :default => ""
-  field :last_name, 	:type => String, :null => false, :default => ""
+  field :username,    :type => String, :null => false, :default => ""
+  field :display_name,:type => String, :null => false, :default => ""
+  field :first_name,  :type => String, :null => false, :default => ""
+  field :last_name,   :type => String, :null => false, :default => ""
+  field :name,        :type => String, :null => false, :default => ""
   
   ## Church
-  field :birthday, 			:type => Date, :null => false, :default => ""
-  field :phone, 			:type => Integer, :null => false, :default => ""
-  field :twitter_username, 	:type => String, :null => false, :default => ""
-  field :facebook_url, 		:type => String, :null => false, :default => ""
-  field :user_info, 		:type => String, :null => false, :default => ""
+  field :birthday,      :type => Date, :null => false, :default => ""
+  field :phone,       :type => Integer, :null => false, :default => ""
+  field :twitter_username,  :type => String, :null => false, :default => ""
+  field :facebook_url,    :type => String, :null => false, :default => ""
+  field :user_info,     :type => String, :null => false, :default => ""
   
-  validates_presence_of :username, :email, :first_name, :last_name, :password
-  validates_uniqueness_of :username, :case_sensitive => false
-  attr_accessible :username, :email, :first_name, :last_name, :password, :password_confirmation, :remember_me
+  validates_presence_of :display_name, :email, :first_name, :last_name, :password
+  validates_uniqueness_of :display_name, :email, :case_sensitive => false
+  attr_accessible :display_name, :username, :email, :first_name, :last_name, :password, :password_confirmation, :remember_me
+  
+  def save_username
+    self.username = self.display_name.downcase
+  end
+  
+  def save_name
+    self.name = self.first_name + ' ' + self.last_name
+  end
   
   def apply_omniauth(omniauth)
     self.email = omniauth['info']['email'] if email.blank?
-    apply_trusted_services(omniauth)#  if self.new_record?
+    apply_trusted_services(omniauth) if self.new_record?
   end
+  
   def apply_trusted_services(omniauth) 
     user_info = omniauth['info']
-    self.twitter_username = user_info['nickname'] unless user_info['nickname'].blank?
-    self.facebook_url = user_info['url'] unless user_info['url'].blank?
     if omniauth['extra'] && omniauth['extra']['user_hash']
       user_info.merge!(omniauth['extra']['user_hash'])
-    end 
-#     if self.username.blank?
-      self.username = user_info['nickname'] unless user_info['nickname'].blank?
-#     end
+    end
+    self.twitter_username = user_info['nickname'] unless user_info['nickname'].blank?
+    self.facebook_url = user_info['url'] unless user_info['url'].blank?
+    if self.display_name.blank?
+      self.display_name = user_info['nickname'] unless user_info['nickname'].blank?
+    end
     if self.first_name.blank?
+      self.first_name = user_info['name'].split[0] unless user_info['name'].blank?
       self.first_name = user_info['first_name'] unless user_info['first_name'].blank?
     end
     if self.last_name.blank?
+      self.last_name = user_info['name'].split[1] unless user_info['name'].blank?
       self.last_name = user_info['last_name'] unless user_info['last_name'].blank?
     end  
     if self.email.blank?

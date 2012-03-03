@@ -12,22 +12,34 @@
           <li><%= link_to "home", root_path %></li>
           <% if user_signed_in? %>
           <li class="dropdown">
+            <a href="admin" 
+              class="dropdown-toggle"
+              data-toggle="dropdown">
+              admin
+              <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                  <li><%= link_to "dashboard", admin_path %></li>
+                  <li><%= link_to "manage users", admin_users_path %></li>
+            </ul>
+          </li>
+          <li class="dropdown">
             <a href="#" 
               class="dropdown-toggle"
               data-toggle="dropdown">
-              internal
+              docs
               <b class="caret"></b>
             </a>
             <ul class="dropdown-menu">
                   <li><%= link_to "rails", internal_rails_path %></li>
                   <li><%= link_to "admin dash", internal_admin_dash_path %></li>
             </ul>
-            </li>
+          </li>
           <% end %>
         </ul>
         <ul class="nav pull-right">
           <% if user_signed_in? %>
-          <li><%= link_to current_user.username, short_profile_path(current_user.username) %></li>
+          <li><%= link_to current_user.display_name, short_profile_path(current_user.username) %></li>
           <li class="divider-vertical"></li>
           <li><%= link_to "sign out", destroy_user_session_path, :method => :delete %></li>
           <% else %>
