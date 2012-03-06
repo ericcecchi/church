@@ -7,6 +7,13 @@
 #   Mayor.create(:name => 'Emanuel', :city => cities.first)
 puts 'EMPTY THE MONGODB DATABASE'
 Mongoid.master.collections.reject { |c| c.name =~ /^system/}.each(&:drop)
-# puts 'SETTING UP DEFAULT USER LOGIN'
-# user = User.create! :username => 'Anna', :first_name => 'Anna', :last_name => 'Tender', :email => 'eric.cecchi@gmail.com', :password => 'tester', :password_confirmation => 'tester'
-# puts 'New user created: ' << user.username
+puts 'SETTING UP ROLES'
+roles_list = [:admin,:elder,:elder_candidate,:mtl,:cgl,:member,:attender]
+roles_list.each do |role|
+  Role.create!(name: role)
+end
+puts "Created roles: " << roles_list.to_sentence.titleize
+puts 'SETTING UP DEFAULT USER LOGIN'
+user = User.create!(display_name: 'root', first_name: 'Admin', last_name: 'Istrator', email: 'modchvrch@gmail.com', password: 'password', password_confirmation: 'password', role_ids: [:admin])
+puts 'Default username: ' << user.username, "Password: " << user.password
+

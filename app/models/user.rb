@@ -1,15 +1,18 @@
 class User
   include Mongoid::Document
+  tango_user
   before_save :save_username, :save_name
+  before_create :init_roles
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable,  :lockable, :timeoutable, :confirmable, :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
+         
   has_many :authentications, :dependent => :delete
   belongs_to :community_group
   has_and_belongs_to_many :missional_teams
-  has_and_belongs_to_many :roles
   embeds_one :address
+  has_and_belongs_to_many :roles
   
   ## Database authenticatable
   field :email,              :type => String, :null => false, :default => ""
@@ -46,6 +49,7 @@ class User
   ## Token authenticatable
   # field :authentication_token, :type => String
   
+  ## Names
   field :username,    :type => String, :null => false, :default => ""
   field :display_name,:type => String, :null => false, :default => ""
   field :first_name,  :type => String, :null => false, :default => ""
@@ -53,24 +57,37 @@ class User
   field :name,        :type => String, :null => false, :default => ""
   
   ## Church
-  field :birthday,      :type => Date, :null => false, :default => ""
-  field :phone,       :type => Integer, :null => false, :default => ""
-  field :twitter_username,  :type => String, :null => false, :default => ""
-  field :facebook_url,    :type => String, :null => false, :default => ""
-  field :user_info,     :type => String, :null => false, :default => ""
+  field :birthday,          :type => Date
+  field :phone,             :type => Integer
+  field :twitter_username,  :type => String
+  field :facebook_url,      :type => String
+  field :user_info,         :type => String
+  field :roles,             :type => Array, :null => false, :default => []
   
-  validates_presence_of :display_name, :email, :first_name, :last_name, :password
+  validates_presence_of :display_name, :email, :first_name, :last_name
+  validates_confirmation_of :password
   validates_uniqueness_of :display_name, :email, :case_sensitive => false
-  attr_accessible :display_name, :username, :email, :first_name, :last_name, :password, :password_confirmation, :remember_me
+  attr_accessible :display_name, :username, :email, :first_name, :last_name, :password, :password_confirmation, :role_ids, :current_password, :remember_me
   
+  def has_role? role
+    !!self.roles.find_by_name(role.to_s)
+  end
+  
+  def init_roles
+    self.role_ids << :attender
+  end
+  
+  ## Use downcased username for better authentication and routes
   def save_username
     self.username = self.display_name.downcase
   end
   
+  ## Concatentated name for easier printing
   def save_name
     self.name = self.first_name + ' ' + self.last_name
   end
   
+  ## Apply user info returned from oauth
   def apply_omniauth(omniauth)
     self.email = omniauth['info']['email'] if email.blank?
     apply_trusted_services(omniauth) if self.new_record?
@@ -78,25 +95,32 @@ class User
   
   def apply_trusted_services(omniauth) 
     user_info = omniauth['info']
+    
     if omniauth['extra'] && omniauth['extra']['user_hash']
       user_info.merge!(omniauth['extra']['user_hash'])
     end
+    
     self.twitter_username = user_info['nickname'] unless user_info['nickname'].blank?
     self.facebook_url = user_info['url'] unless user_info['url'].blank?
+    
     if self.display_name.blank?
       self.display_name = user_info['nickname'] unless user_info['nickname'].blank?
     end
+    
     if self.first_name.blank?
       self.first_name = user_info['name'].split[0] unless user_info['name'].blank?
       self.first_name = user_info['first_name'] unless user_info['first_name'].blank?
     end
+    
     if self.last_name.blank?
       self.last_name = user_info['name'].split[1] unless user_info['name'].blank?
       self.last_name = user_info['last_name'] unless user_info['last_name'].blank?
-    end  
+    end
+    
     if self.email.blank?
       self.email = user_info['email'] unless user_info['email'].blank?
-    end 
+    end
+    
 #     self.password, self.password_confirmation = SecureRandom.hex(10)  
     self.confirmed_at, self.confirmation_sent_at = Time.now 
   end

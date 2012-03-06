@@ -6,11 +6,11 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </a>
-      <%= link_to "church", root_path, :class => 'brand' %>
+      <%= link_to "chvrch", root_path, :class => 'brand' %>
       <div class="nav-collapse">
         <ul class="nav">
           <li><%= link_to "home", root_path %></li>
-          <% if user_signed_in? %>
+          <% if can? :manage, :all %>
           <li class="dropdown">
             <a href="admin" 
               class="dropdown-toggle"

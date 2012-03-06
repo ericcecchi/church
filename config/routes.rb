@@ -1,6 +1,6 @@
 Church::Application.routes.draw do
   match '/admin', :to => "admin#index"
-  get '/admin/users'
+  get '/admin/users', :as => "manage_users"
   resources :roles
   match '/roles/:name', :to => "users#edit"
   resources :community_groups, path: "community"
@@ -11,8 +11,11 @@ Church::Application.routes.draw do
   get "internal/rails"
   get "internal/admin_dash"
   devise_for :users, :path_names => { :sign_up => "register", :sign_in => "signin", sign_out: "signout" }, :controllers => { :registrations => 'accounts' }
-  resources :users, :only => :show
-  match '/:display_name', :to => "users#show", :as => "short_profile"
+  get '/:display_name', :to => "users#show", :as => "short_profile"
+  get '/:display_name/edit', :to => "users#edit", :as => "edit_user"
+  delete '/:display_name', :to => "users#destroy"
+  put '/:display_name', :to => "users#update", :as => "update_user"
+  resources :users
   root :to => "home#index"
   
   # The priority is based upon order of creation:

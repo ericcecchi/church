@@ -3,3 +3,6 @@
 <p><%= @user.first_name + " " + @user.last_name %></p>
 <p><%= @user.email %></p>
 <p><%= @user.user_info %></p>
+<% if can? :update, @user %>
+<p><%= link_to "Edit info", edit_user_path(@user.username) %></p>
+<% end %>

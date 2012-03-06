@@ -10,8 +10,8 @@
       </thead>
       <% User.all.each do |user| %>
         <tr>
-          <td><%= link_to user.name, edit_user_registration_path(user) %></td>
-          <td><%= user.roles.join(', ') %></td>
+          <td><%= link_to user.name, edit_user_path(user.username) %></td>
+          <td><%= user.role_ids.to_sentence.humanize %></td>
           <td><%= mail_to user.email, "Email" %></td>
         </tr>
       <% end %>

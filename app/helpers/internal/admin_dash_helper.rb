@@ -1,2 +1,0 @@
-module Internal::AdminDashHelper
-end
