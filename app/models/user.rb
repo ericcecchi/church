@@ -1,6 +1,5 @@
 class User
   include Mongoid::Document
-  tango_user
   before_save :save_username, :save_name
   before_create :init_roles
   # Include default devise modules. Others available are:

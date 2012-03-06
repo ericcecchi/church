@@ -1,13 +1,13 @@
 <h2>Edit User</h2>
-
-<%= form_for(:user, :as => @user, :url => update_user_path, :html => { :method => :put }) do |f| %>
+<div class="form-horizontal">
+<%= form_for @user do |f| %>
   <% if not @user.errors.empty? %>
-  <div class="alert alert-block alert-error">
-  <a class="close" data-dismiss="alert">×</a>
-  <% @user.errors.full_messages.each do |error| %>
-  <%= error %>
-  <% end%>
-  </div>
+    <div class="alert alert-block alert-error">
+    <a class="close" data-dismiss="alert">×</a>
+    <% @user.errors.full_messages.each do |error| %>
+      <%= error %>
+    <% end%>
+    </div>
   <% end %>
   
   <div class="control-group">
@@ -39,10 +39,10 @@
   </div>
   
   <div class="control-group">
-  <%= f.label :password, :class=>"control-label" %>
+  <%= f.label "New Password", :class=>"control-label" %>
   <div class="controls">
   <%= f.password_field :password, :autocomplete => "off"  %>
-  <p class="help-block">Minimum 6 characters.</p>
+  <p class="help-block">Leave blank to keep current password. Minimum 6 characters.</p>
   </div>
   </div>
 
@@ -52,17 +52,25 @@
   <%= f.password_field :password_confirmation, :autocomplete => "off"  %>
   </div>
   </div>
-  
+
+  <div class="control-group">
+  <%= f.label :roles, :class=>"control-label" %>
+  <div class="controls"> 
   <% if can? :manage, Role 
-      Role.all.each do |role| %>  
-    <div>  
+      Role.all.sort.each do |role| %>  
       <%= check_box_tag "user[role_ids][]", role.name, @user.roles.include?(role) %>  
-      <%= role.name.humanize %>  
-    </div>  
+      <%= if role.name != 'cgl' and role.name != 'mtl'
+            role.name.humanize 
+          else
+            role.name.upcase 
+          end %>  
   <% end 
-    end %> 
+    end %>
+  </div>
+  </div>
 
   <div class="control-group controls">
   <%= f.submit "Update", :class => "btn" %>
   </div>
   <% end %>
+</div>

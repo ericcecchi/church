@@ -57,5 +57,5 @@ gem "bootstrap-sass", "~> 2.0.1"
 gem "redcarpet"
 # gem "nokogiri"
 # gem "albino"
-gem "cantango"
+gem "cancan"
 # gem 'troles'
