@@ -162,8 +162,6 @@ GEM
       railties (~> 3.2.0)
       sass (>= 3.1.10)
       tilt (~> 1.3)
-    schemaker (0.1.4)
-      sweetloader (>= 0.1.1)
     selenium-webdriver (2.13.0)
       childprocess (>= 0.2.1)
       ffi (~> 1.0.9)
@@ -184,10 +182,6 @@ GEM
     treetop (1.4.10)
       polyglot
       polyglot (>= 0.3.1)
-    troles (0.6.1)
-      schemaker (>= 0.1.4)
-      sugar-high (>= 0.6.0)
-      sweetloader (>= 0.1.1)
     tzinfo (0.3.31)
     uglifier (1.2.3)
       execjs (>= 0.3.0)
@@ -218,5 +212,4 @@ DEPENDENCIES
   rails (= 3.2.1)
   redcarpet
   sass-rails (~> 3.2.3)
-  troles
   uglifier (>= 1.0.3)
