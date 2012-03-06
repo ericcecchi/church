@@ -1,0 +1,79 @@
+<div class="form-horizontal">
+<h1>Create account</h1>
+<p>Use the form below to sign up for a chvrch account.<br/></p>
+
+<%= form_for @user do |f| %>
+  <% if not @user.errors.empty? %>
+    <div class="alert alert-block alert-error">
+    <a class="close" data-dismiss="alert">×</a>
+    <% @user.errors.full_messages.each do |error| %>
+      <%= error %>
+    <% end%>
+    </div>
+  <% end %>
+
+  <div class="control-group">
+  <%= f.label :first_name, :class=>"control-label"%>
+  <div class="controls">
+  <%= f.text_field :first_name %>
+  </div>
+  </div>
+  
+  <div class="control-group">
+  <%= f.label :last_name, :class=>"control-label"%>
+  <div class="controls">
+  <%= f.text_field :last_name %>
+  </div>
+  </div>
+
+  <div class="control-group">
+  <%= f.label :username, :class=>"control-label"%>
+  <div class="controls">
+  <%= f.text_field :display_name %>
+  </div>
+  </div>
+
+  <div class="control-group">
+  <%= f.label :email, :class=>"control-label"%>
+  <div class="controls">
+  <%= f.email_field :email %>
+  </div>
+  </div>
+  
+  <div class="control-group">
+  <%= f.label :password, :class=>"control-label" %>
+  <div class="controls">
+  <%= f.password_field :password %>
+  <p class="help-block">Minimum 6 characters.</p>
+  </div>
+  </div>
+
+  <div class="control-group">
+  <%= f.label :password_confirmation, :class=>"control-label" %>
+  <div class="controls">
+  <%= f.password_field :password_confirmation %>
+  </div>
+  </div>
+  
+  <div class="control-group">
+  <%= f.label :roles, :class=>"control-label" %>
+  <div class="controls"> 
+  <% if can? :manage, Role 
+      Role.all.sort.each do |role| %>  
+      <%= check_box_tag "user[role_ids][]", role.name, @user.roles.include?(role) %>  
+      <%= if role.name != 'cgl' and role.name != 'mtl'
+            role.name.humanize 
+          else
+            role.name.upcase 
+          end %>  
+  <% end 
+    end %>
+  </div>
+  </div>
+  
+  <div class="control-group controls">
+  <%= f.submit "Sign up", :class => "btn" %>
+  </div>
+<% end %>
+</div>
+<%= render "links" %>

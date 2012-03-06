@@ -1,0 +1,22 @@
+<div class="row-fluid">
+  <%= render 'sidebar' %>
+  <div class="span9">
+    <h1>Manage Community Groups</h1>
+    <table class="table table-striped table-bordered">
+      <thead>
+        <th>Name</th>
+        <th>CGLs</th>
+        <th>Members</th>
+        <th></th>
+      </thead>
+      <% CommunityGroup.all.sort.each do |group| %>
+        <tr>
+          <td><%= link_to group.name, community_group_path(group) %></td>
+          <td><%= team.cgls.sort.to_sentence.humanize %></td>
+          <td><%= team.users.count %></td>
+          <td><%= link_to "Edit", community_group_edit_path(group) %></td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+</div>

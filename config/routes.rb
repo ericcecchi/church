@@ -1,8 +1,10 @@
 Church::Application.routes.draw do
-  match '/admin', :to => "admin#index"
-  get '/admin/users', :as => "manage_users"
+  match '/admin', to: "admin#index"
+  get '/admin/community', as: 'manage_community'
+  get '/admin/mission', as: "manage_mission"
+  get '/admin/users', as: "manage_users"
   resources :roles
-  match '/roles/:name', :to => "users#edit"
+  match '/roles/:name', to: "users#edit"
   resources :community_groups, path: "community"
   resources :missional_teams, path: "mission"
   resources :authentications
@@ -10,13 +12,13 @@ Church::Application.routes.draw do
   match "/auth/failure", to: "authentications#index"
   get "internal/rails"
   get "internal/admin_dash"
-  devise_for :users, :path_names => { :sign_up => "register", :sign_in => "signin", sign_out: "signout" }, :controllers => { :registrations => 'accounts' }
-  get '/:display_name', :to => "users#show", :as => "short_profile"
-  get '/:display_name/edit', :to => "users#edit", :as => "edit_user"
-  delete '/:display_name', :to => "users#destroy"
-  put '/:display_name', :to => "users#update", :as => "update_user"
+  devise_for :users, path_names: { :sign_up => "register", :sign_in => "signin", sign_out: "signout" }, controllers: { :registrations => 'accounts' }
+  get '/:display_name', to: "users#show", as: "short_profile"
+  get '/:display_name/edit', to: "users#edit",  as: "edit_user"
+  delete '/:display_name', to: "users#destroy"
+  put '/:display_name', to: "users#update",  as: "update_user"
   resources :users
-  root :to => "home#index"
+  root to: "home#index"
   
   # The priority is based upon order of creation:
   # first created -> highest priority.
