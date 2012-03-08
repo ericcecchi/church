@@ -68,6 +68,11 @@ class User
   attr_accessible :display_name, :username, :email, :first_name, :last_name, 
                   :password, :password_confirmation, :role_ids, :current_password, :remember_me
   
+  def admin_create
+    self.display_name = self.first_name + self.last_name
+    self.password = Digest::SHA1.hexdigest Time.now.to_s
+  end
+  
   def to_param
     username
   end
@@ -88,6 +93,12 @@ class User
   ## Concatentated name for easier printing
   def save_name
     self.name = self.first_name + ' ' + self.last_name
+  end
+  
+  def update_attributes(params)
+    params.delete(:password) if params[:password].blank?
+    params.delete(:password_confirmation) if params[:password].blank? and params[:password_confirmation].blank?
+    super
   end
   
   ## Apply user info returned from oauth

@@ -9,8 +9,7 @@ class UsersController < ApplicationController
   def show
     @user = User.first(conditions: { username: params[:display_name].downcase })
     if @user.nil?
-      flash[:alert] = "The page you are looking for does not exist."
-      redirect_to root_path
+      redirect_to root_path, alert: "The page you are looking for does not exist."
     end
   end
  
@@ -19,27 +18,24 @@ class UsersController < ApplicationController
   end
   
   def new
-    @community_group = User.new
-
+    @user = User.new
     respond_to do |format|
       format.html # new.html.erb
-      format.json { render json: @community_group }
+      format.json { render json: @user }
     end    
   end
   
   def destroy
     @user = User.first(conditions: { username: params[:display_name].downcase })
     if @user.destroy
-      flash[:notice] = "Successfully deleted User."
-      redirect_to root_path
+      redirect_to manage_users_path, notice: "Successfully deleted user."
     end
   end
 
   def create
     if can? :manage, User
       @user = User.new(params[:user])
-      @user.display_name = @user.first_name + @user.last_name
-      @user.password = Digest::SHA1.hexdigest Time.now.to_s
+      @user.admin_create
     end
     if @user.save
       redirect_to manage_users_path
@@ -50,15 +46,12 @@ class UsersController < ApplicationController
   
   def update
     @user = User.first(conditions: { username: params[:display_name].downcase })
-    params[:user].delete(:password) if params[:user][:password].blank?
-    params[:user].delete(:password_confirmation) if params[:user][:password].blank? and params[:user][:password_confirmation].blank?
     if @user.update_attributes(params[:user])
-      flash[:notice] = "Successfully updated user."
       if @user == current_user
         sign_in @user, :bypass => true # Bypass authentication in case password was changed
-        redirect_to user_path(@user.display_name)
+        redirect_to user_path(@user), notice: "Successfully updated user."
       else
-        redirect_to manage_users_path
+        redirect_to manage_users_path, notice: "Successfully updated user."
       end
     else
       render :action => 'edit'
