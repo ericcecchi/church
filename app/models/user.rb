@@ -8,7 +8,7 @@ class User
          :recoverable, :rememberable, :trackable, :validatable
          
   has_many :authentications, :dependent => :delete
-  belongs_to :community_group
+  has_one :community_group
   has_and_belongs_to_many :missional_teams
   embeds_one :address
   has_and_belongs_to_many :roles
@@ -63,17 +63,21 @@ class User
   field :user_info,         :type => String
   field :roles,             :type => Array, :null => false, :default => []
   
-  validates_presence_of :display_name, :email, :first_name, :last_name
-  validates_confirmation_of :password
-  validates_uniqueness_of :display_name, :email, :case_sensitive => false
-  attr_accessible :display_name, :username, :email, :first_name, :last_name, :password, :password_confirmation, :role_ids, :current_password, :remember_me
+  validates_presence_of :display_name, :first_name, :last_name
+  validates_uniqueness_of :display_name, :case_sensitive => false
+  attr_accessible :display_name, :username, :email, :first_name, :last_name, 
+                  :password, :password_confirmation, :role_ids, :current_password, :remember_me
+  
+  def to_param
+    username
+  end
   
   def has_role? role
-    !!self.roles.find_by_name(role.to_s)
+    !!self.roles.first(conditions: {name: role.to_s})
   end
   
   def init_roles
-    self.role_ids << :attender
+    self.role_ids << 'attender'
   end
   
   ## Use downcased username for better authentication and routes

@@ -1,4 +1,6 @@
 class CommunityGroup < Group
   include Mongoid::Document
-  has_many :cgls
+  def cgls
+    self.members.where(role: :mtl)
+  end
 end

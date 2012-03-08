@@ -4,7 +4,6 @@ class AuthenticationsController < ApplicationController
   end
   
   def create
-#     render :text => request.env["omniauth.auth"].to_json
     omniauth = request.env["omniauth.auth"]
     authentication = Authentication.first(conditions: {provider: omniauth['provider'], uid: omniauth['uid']} )
     if authentication

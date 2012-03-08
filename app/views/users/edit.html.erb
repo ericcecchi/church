@@ -3,10 +3,13 @@
 <%= form_for @user do |f| %>
   <% if not @user.errors.empty? %>
     <div class="alert alert-block alert-error">
+    <h3>The following errors prevented user info from being updated:</h3>
     <a class="close" data-dismiss="alert">×</a>
+    <ul>
     <% @user.errors.full_messages.each do |error| %>
-      <%= error %>
+      <li><%= error %></li>
     <% end%>
+    </ul>
     </div>
   <% end %>
   
@@ -53,21 +56,24 @@
   </div>
   </div>
 
+  <% if can? :manage, Role %>
   <div class="control-group">
   <%= f.label :roles, :class=>"control-label" %>
-  <div class="controls"> 
-  <% if can? :manage, Role 
-      Role.all.sort.each do |role| %>  
+  <div class="controls">  
+    <% Role.asc(:name).each do |role| %>
+      <% if role.name == 'attender'
+           next
+         end %>
       <%= check_box_tag "user[role_ids][]", role.name, @user.roles.include?(role) %>  
       <%= if role.name != 'cgl' and role.name != 'mtl'
             role.name.humanize 
           else
             role.name.upcase 
           end %>  
-  <% end 
-    end %>
+  <% end %>
   </div>
   </div>
+  <% end %>
 
   <div class="control-group controls">
   <%= f.submit "Update", :class => "btn" %>

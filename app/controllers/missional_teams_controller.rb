@@ -13,7 +13,7 @@ class MissionalTeamsController < ApplicationController
   # GET /missional_teams/1
   # GET /missional_teams/1.json
   def show
-    @missional_team = MissionalTeam.find(params[:id])
+    @missional_team = MissionalTeam.first(conditions: {name: params[:name]})
 
     respond_to do |format|
       format.html # show.html.erb
@@ -34,7 +34,7 @@ class MissionalTeamsController < ApplicationController
 
   # GET /missional_teams/1/edit
   def edit
-    @missional_team = MissionalTeam.find(params[:id])
+    @missional_team = MissionalTeam.first(conditions: {name: params[:name]})
   end
 
   # POST /missional_teams
@@ -44,7 +44,7 @@ class MissionalTeamsController < ApplicationController
 
     respond_to do |format|
       if @missional_team.save
-        format.html { redirect_to @missional_team, notice: 'Missional team was successfully created.' }
+        format.html { redirect_to manage_missional_teams_path, notice: 'Missional team was successfully created.' }
         format.json { render json: @missional_team, status: :created, location: @missional_team }
       else
         format.html { render action: "new" }
@@ -56,11 +56,11 @@ class MissionalTeamsController < ApplicationController
   # PUT /missional_teams/1
   # PUT /missional_teams/1.json
   def update
-    @missional_team = MissionalTeam.find(params[:id])
+    @missional_team = MissionalTeam.first(conditions: {name: params[:name]})
 
     respond_to do |format|
       if @missional_team.update_attributes(params[:missional_team])
-        format.html { redirect_to @missional_team, notice: 'Missional team was successfully updated.' }
+        format.html { redirect_to manage_missional_teams_path, notice: 'Missional team was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -72,7 +72,7 @@ class MissionalTeamsController < ApplicationController
   # DELETE /missional_teams/1
   # DELETE /missional_teams/1.json
   def destroy
-    @missional_team = MissionalTeam.find(params[:id])
+    @missional_team = MissionalTeam.first(conditions: {name: params[:name]})
     @missional_team.destroy
 
     respond_to do |format|

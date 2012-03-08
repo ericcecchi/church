@@ -50,6 +50,7 @@ gem "capybara", ">= 1.1.2", :group => :test
 gem "launchy", ">= 2.0.5", :group => :test
 gem "bson_ext", ">= 1.5.2"
 gem 'mongoid', '= 2.4.5'
+# gem 'mongoid_slug'
 gem "devise", ">= 2.0.4"
 gem "omniauth-twitter"
 gem "omniauth-facebook"

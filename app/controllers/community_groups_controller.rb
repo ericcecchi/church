@@ -13,7 +13,7 @@ class CommunityGroupsController < ApplicationController
   # GET /community_groups/1
   # GET /community_groups/1.json
   def show
-    @community_group = CommunityGroup.find(params[:id])
+    @community_group = CommunityGroup.first(conditions: {name: params[:name]})
 
     respond_to do |format|
       format.html # show.html.erb
@@ -34,7 +34,7 @@ class CommunityGroupsController < ApplicationController
 
   # GET /community_groups/1/edit
   def edit
-    @community_group = CommunityGroup.find(params[:id])
+    @community_group = CommunityGroup.first(conditions: {name: params[:name]})
   end
 
   # POST /community_groups
@@ -44,7 +44,7 @@ class CommunityGroupsController < ApplicationController
 
     respond_to do |format|
       if @community_group.save
-        format.html { redirect_to @community_group, notice: 'Community group was successfully created.' }
+        format.html { redirect_to manage_community_groups_path, notice: 'Community group was successfully created.' }
         format.json { render json: @community_group, status: :created, location: @community_group }
       else
         format.html { render action: "new" }
@@ -56,11 +56,11 @@ class CommunityGroupsController < ApplicationController
   # PUT /community_groups/1
   # PUT /community_groups/1.json
   def update
-    @community_group = CommunityGroup.find(params[:id])
+    @community_group = CommunityGroup.first(conditions: {name: params[:name]})
 
     respond_to do |format|
       if @community_group.update_attributes(params[:community_group])
-        format.html { redirect_to @community_group, notice: 'Community group was successfully updated.' }
+        format.html { redirect_to manage_community_groups_path, notice: 'Community group was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -72,7 +72,7 @@ class CommunityGroupsController < ApplicationController
   # DELETE /community_groups/1
   # DELETE /community_groups/1.json
   def destroy
-    @community_group = CommunityGroup.find(params[:id])
+    @community_group = CommunityGroup.first(conditions: {name: params[:name]})
     @community_group.destroy
 
     respond_to do |format|

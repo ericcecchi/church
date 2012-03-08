@@ -1,4 +1,6 @@
 class MissionalTeam < Group
   include Mongoid::Document
-  has_many :mtls
+  def mtls
+    self.members.where(role: :mtl)
+  end
 end

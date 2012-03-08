@@ -9,14 +9,15 @@
         <th>Members</th>
         <th></th>
       </thead>
-      <% CommunityGroup.all.sort.each do |group| %>
+      <% CommunityGroup.asc(:name).each do |group| %>
         <tr>
-          <td><%= link_to group.name, community_group_path(group) %></td>
-          <td><%= team.cgls.sort.to_sentence.humanize %></td>
-          <td><%= team.users.count %></td>
-          <td><%= link_to "Edit", community_group_edit_path(group) %></td>
+          <td><%= link_to group.name, community_group_path(group.name) %></td>
+          <td><%= group.cgls.sort.to_sentence.humanize %></td>
+          <td><%= group.users.count %></td>
+          <td><%= link_to "Edit", edit_community_group_path(group.name) %></td>
         </tr>
       <% end %>
     </table>
+    <%= link_to "New Group", new_community_group_path, class: 'btn btn-primary' %>
   </div>
 </div>

@@ -9,14 +9,15 @@
         <th>Members</th>
         <th></th>
       </thead>
-      <% MissionalTeam.all.sort.each do |team| %>
+      <% MissionalTeam.asc(:name).each do |team| %>
         <tr>
-          <td><%= link_to team.name, missional_team_path(team) %></td>
+          <td><%= link_to team.name, missional_team_path(team.name) %></td>
           <td><%= team.mtls.sort.to_sentence.humanize %></td>
           <td><%= team.users.count %></td>
-          <td><%= link_to "Edit", missional_team_edit_path(team) %></td>
+          <td><%= link_to "Edit", edit_missional_team_path(team.name) %></td>
         </tr>
       <% end %>
     </table>
+    <%= link_to "New Team", new_missional_team_path, class: 'btn btn-success' %>
   </div>
 </div>

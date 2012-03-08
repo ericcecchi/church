@@ -1,4 +1,4 @@
-class InternalController < ApplicationController
+class DocsController < ApplicationController
   before_filter :authenticate_user!
   require 'redcarpet'
 

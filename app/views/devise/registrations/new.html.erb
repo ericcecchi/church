@@ -5,10 +5,13 @@
 <%= form_for @user do |f| %>
   <% if not @user.errors.empty? %>
     <div class="alert alert-block alert-error">
+    <h3>The following fields need to be updated to complete registration:</h3>
     <a class="close" data-dismiss="alert">×</a>
+    <ul>
     <% @user.errors.full_messages.each do |error| %>
-      <%= error %>
+      <li><%= error %></li>
     <% end%>
+    </ul>
     </div>
   <% end %>
 
@@ -52,22 +55,6 @@
   <%= f.label :password_confirmation, :class=>"control-label" %>
   <div class="controls">
   <%= f.password_field :password_confirmation %>
-  </div>
-  </div>
-  
-  <div class="control-group">
-  <%= f.label :roles, :class=>"control-label" %>
-  <div class="controls"> 
-  <% if can? :manage, Role 
-      Role.all.sort.each do |role| %>  
-      <%= check_box_tag "user[role_ids][]", role.name, @user.roles.include?(role) %>  
-      <%= if role.name != 'cgl' and role.name != 'mtl'
-            role.name.humanize 
-          else
-            role.name.upcase 
-          end %>  
-  <% end 
-    end %>
   </div>
   </div>
   

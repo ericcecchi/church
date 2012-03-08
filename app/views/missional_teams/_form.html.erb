@@ -1,17 +1,26 @@
+<div class="form-horizontal">
 <%= form_for(@missional_team) do |f| %>
-  <% if @missional_team.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@missional_team.errors.count, "error") %> prohibited this missional_team from being saved:</h2>
-
-      <ul>
-      <% @missional_team.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
+<% if @missional_team.errors.any? %>
+    <div class="alert alert-block alert-error">
+    <h3>The following errors need to be fixed:</h3>
+    <a class="close" data-dismiss="alert">×</a>
+    <ul>
+    <% @missional_team.errors.full_messages.each do |error| %>
+      <li><%= error %></li>
+    <% end%>
+    </ul>
     </div>
   <% end %>
+  
+  <div class="control-group">
+  <%= f.label :name, :class=>"control-label"%>
+  <div class="controls">
+  <%= f.text_field :name %>
+  </div>
+  </div>
 
-  <div class="actions">
-    <%= f.submit %>
+  <div class="control-group controls">
+  <%= f.submit :class => "btn" %>
   </div>
 <% end %>
+</div>

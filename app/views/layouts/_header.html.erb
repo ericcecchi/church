@@ -21,6 +21,8 @@
             <ul class="dropdown-menu">
                   <li><%= link_to "dashboard", admin_path %></li>
                   <li><%= link_to "manage users", manage_users_path %></li>
+                  <li><%= link_to 'manage community groups', manage_community_path %></li>
+                  <li><%= link_to 'manage missional teams', manage_mission_path %></li>
             </ul>
           </li>
           <li class="dropdown">
@@ -31,15 +33,15 @@
               <b class="caret"></b>
             </a>
             <ul class="dropdown-menu">
-                  <li><%= link_to "rails", internal_rails_path %></li>
-                  <li><%= link_to "admin dash", internal_admin_dash_path %></li>
+                  <li><%= link_to "rails", docs_rails_path %></li>
+                  <li><%= link_to "admin dash", docs_admin_dash_path %></li>
             </ul>
           </li>
           <% end %>
         </ul>
         <ul class="nav pull-right">
           <% if user_signed_in? %>
-          <li><%= link_to current_user.display_name, short_profile_path(current_user.username) %></li>
+          <li><%= link_to current_user.display_name, user_path(current_user.username) %></li>
           <li class="divider-vertical"></li>
           <li><%= link_to "sign out", destroy_user_session_path, :method => :delete %></li>
           <% else %>
