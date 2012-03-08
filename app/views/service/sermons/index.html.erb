@@ -1,0 +1,21 @@
+<h1>Listing service_sermons</h1>
+
+<table>
+  <tr>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @service_sermons.each do |service_sermon| %>
+  <tr>
+    <td><%= link_to 'Show', service_sermon %></td>
+    <td><%= link_to 'Edit', edit_service_sermon_path(service_sermon) %></td>
+    <td><%= link_to 'Destroy', service_sermon, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Sermon', new_service_sermon_path %>

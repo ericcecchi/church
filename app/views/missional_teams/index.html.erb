@@ -18,4 +18,6 @@
 
 <br />
 
+<% if can? :manage, MissionalTeam %>
 <%= link_to 'New Missional team', new_missional_team_path %>
+<% end %>

@@ -1,5 +1,7 @@
+<h1><%= @missional_team.name.titleize %></h1>
 <p id="notice"><%= notice %></p>
 
-
+<% if can? :manage, MissionalTeam %>
 <%= link_to 'Edit', edit_missional_team_path(@missional_team) %> |
-<%= link_to 'Back', missional_teams_path %>
+<%= link_to 'Back', manage_missional_teams_path %>
+<% end %>

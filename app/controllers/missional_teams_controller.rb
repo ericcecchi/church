@@ -1,44 +1,25 @@
 class MissionalTeamsController < ApplicationController
-  # GET /missional_teams
-  # GET /missional_teams.json
+  load_and_authorize_resource
+  respond_to :html, :json, :xml
+
   def index
     @missional_teams = MissionalTeam.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @missional_teams }
-    end
+    respond_with @missional_teams
   end
 
-  # GET /missional_teams/1
-  # GET /missional_teams/1.json
   def show
     @missional_team = MissionalTeam.first(conditions: {name: params[:name]})
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @missional_team }
-    end
+    respond_with @missional_team
   end
 
-  # GET /missional_teams/new
-  # GET /missional_teams/new.json
   def new
     @missional_team = MissionalTeam.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @missional_team }
-    end
   end
 
-  # GET /missional_teams/1/edit
   def edit
     @missional_team = MissionalTeam.first(conditions: {name: params[:name]})
   end
 
-  # POST /missional_teams
-  # POST /missional_teams.json
   def create
     @missional_team = MissionalTeam.new(params[:missional_team])
 
@@ -53,8 +34,6 @@ class MissionalTeamsController < ApplicationController
     end
   end
 
-  # PUT /missional_teams/1
-  # PUT /missional_teams/1.json
   def update
     @missional_team = MissionalTeam.first(conditions: {name: params[:name]})
 
@@ -69,8 +48,6 @@ class MissionalTeamsController < ApplicationController
     end
   end
 
-  # DELETE /missional_teams/1
-  # DELETE /missional_teams/1.json
   def destroy
     @missional_team = MissionalTeam.first(conditions: {name: params[:name]})
     @missional_team.destroy

@@ -54,7 +54,7 @@ class UsersController < ApplicationController
         redirect_to manage_users_path, notice: "Successfully updated user."
       end
     else
-      render :action => 'edit'
+      render :edit
     end
   end
 end

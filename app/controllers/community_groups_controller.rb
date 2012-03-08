@@ -1,44 +1,25 @@
 class CommunityGroupsController < ApplicationController
-  # GET /community_groups
-  # GET /community_groups.json
+  load_and_authorize_resource
+  respond_to :html, :json, :xml
+  
   def index
     @community_groups = CommunityGroup.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @community_groups }
-    end
+    respond_with @community_groups
   end
 
-  # GET /community_groups/1
-  # GET /community_groups/1.json
   def show
     @community_group = CommunityGroup.first(conditions: {name: params[:name]})
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @community_group }
-    end
+    respond_with @community_group
   end
 
-  # GET /community_groups/new
-  # GET /community_groups/new.json
   def new
     @community_group = CommunityGroup.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @community_group }
-    end
   end
 
-  # GET /community_groups/1/edit
   def edit
     @community_group = CommunityGroup.first(conditions: {name: params[:name]})
   end
 
-  # POST /community_groups
-  # POST /community_groups.json
   def create
     @community_group = CommunityGroup.new(params[:community_group])
 
@@ -53,8 +34,6 @@ class CommunityGroupsController < ApplicationController
     end
   end
 
-  # PUT /community_groups/1
-  # PUT /community_groups/1.json
   def update
     @community_group = CommunityGroup.first(conditions: {name: params[:name]})
 
@@ -69,8 +48,6 @@ class CommunityGroupsController < ApplicationController
     end
   end
 
-  # DELETE /community_groups/1
-  # DELETE /community_groups/1.json
   def destroy
     @community_group = CommunityGroup.first(conditions: {name: params[:name]})
     @community_group.destroy

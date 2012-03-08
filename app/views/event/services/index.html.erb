@@ -1,0 +1,21 @@
+<h1>Listing event_services</h1>
+
+<table>
+  <tr>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @event_services.each do |event_service| %>
+  <tr>
+    <td><%= link_to 'Show', event_service %></td>
+    <td><%= link_to 'Edit', edit_event_service_path(event_service) %></td>
+    <td><%= link_to 'Destroy', event_service, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Service', new_event_service_path %>

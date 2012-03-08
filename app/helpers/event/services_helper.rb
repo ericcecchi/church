@@ -1,0 +1,2 @@
+module Event::ServicesHelper
+end

@@ -1,16 +1,6 @@
 class DocsController < ApplicationController
-  before_filter :authenticate_user!
-  require 'redcarpet'
-
-  def rails
-    respond_to do |format|
-      format.html # rails.html.erb
-    end
-  end
-  
-  def admin_dash
-  	respond_to do |format|
-  	  format.html # rails.html.erb
-  	end
+  before_filter :check_permissions
+  def check_permissions
+    authorize! :manage, :all
   end
 end

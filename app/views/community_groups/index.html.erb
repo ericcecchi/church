@@ -18,4 +18,6 @@
 
 <br />
 
+<% if can? :manage, CommunityGroup %>
 <%= link_to 'New Community group', new_community_group_path %>
+<% end %>

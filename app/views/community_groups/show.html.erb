@@ -1,5 +1,7 @@
+<h1><%= @community_group.name.titleize %></h1>
 <p id="notice"><%= notice %></p>
 
-
+<% if can? :manage, CommunityGroup %>
 <%= link_to 'Edit', edit_community_group_path(@community_group) %> |
-<%= link_to 'Back', community_groups_path %>
+<%= link_to 'Back', manage_community_groups_path %>
+<% end %>

@@ -7,20 +7,17 @@ class AuthenticationsController < ApplicationController
     omniauth = request.env["omniauth.auth"]
     authentication = Authentication.first(conditions: {provider: omniauth['provider'], uid: omniauth['uid']} )
     if authentication
-      flash[:notice] = "Signed in successfully."
-      sign_in_and_redirect(:user, authentication.user)
+      sign_in_and_redirect(:user, authentication.user, notice: "Signed in successfully.")
     elsif current_user
       current_user.apply_omniauth(omniauth)
       current_user.authentications.create!(provider: omniauth['provider'], uid: omniauth['uid'])
-      flash[:notice] = "Authentication successful."
-      redirect_to authentications_url
+      redirect_to authentications_url, notice: "Authentication successful."
     else
-      user = User.new
-      user.apply_omniauth(omniauth)
+      @user = User.new
+      @user.apply_omniauth(omniauth)
       if user.save
-        flash[:notice] = "Account created successfully."
-        user.authentications.create!(provider: omniauth['provider'], uid: omniauth['uid'])
-        sign_in_and_redirect(:user, user)
+        @user.authentications.create!(provider: omniauth['provider'], uid: omniauth['uid'])
+        sign_in_and_redirect(:user, @user, notice: "Account created successfully.")
       else
         session[:omniauth] = omniauth.except('extra')
         redirect_to new_user_registration_url
@@ -30,9 +27,11 @@ class AuthenticationsController < ApplicationController
   
   def destroy
     @authentication = current_user.authentications.find(params[:id])
-    @authentication.destroy
-    flash[:notice] = "Successfully destroyed authentication."
-    redirect_to authentications_url
+    if @authentication.destroy
+      redirect_to authentications_url, notice: "Successfully destroyed authentication."
+    else
+      redirect_to authentications_url, notice: "Something went wrong..."
+    end
   end
 
   protected
