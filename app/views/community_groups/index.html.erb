@@ -1,23 +1,26 @@
-<h1>Listing community_groups</h1>
-
-<table>
-  <tr>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
-
-<% @community_groups.each do |community_group| %>
-  <tr>
-    <td><%= link_to 'Show', community_group %></td>
-    <td><%= link_to 'Edit', edit_community_group_path(community_group) %></td>
-    <td><%= link_to 'Destroy', community_group, confirm: 'Are you sure?', method: :delete %></td>
-  </tr>
-<% end %>
+<h1>Community Groups</h1>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th> type</th>
+      <th>Created at</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @community_groups.each do |community_group| %>
+      <tr>
+        <td><%= community_group.id %></td>
+        <td><%= link_to community_group._type, community_group_path(community_group) %></td>
+        <td><%= community_group.created_at %></td>
+        <td>
+          <%= link_to 'Edit', edit_community_group_path(community_group), :class => 'btn btn-mini' %>
+          <%= link_to 'Destroy', community_group_path(community_group), :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
 </table>
 
-<br />
-
-<% if can? :manage, CommunityGroup %>
-<%= link_to 'New Community group', new_community_group_path %>
-<% end %>
+<%= link_to 'New', new_community_group_path, :class => 'btn btn-primary' %>

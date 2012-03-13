@@ -16,7 +16,7 @@ group :assets do
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   # gem 'therubyracer'
-
+  gem 'twitter-bootstrap-rails'
   gem 'uglifier', '>= 1.0.3'
 end
 
@@ -54,7 +54,6 @@ gem 'mongoid', '= 2.4.5'
 gem "devise", ">= 2.0.4"
 gem "omniauth-twitter"
 gem "omniauth-facebook"
-gem "bootstrap-sass", "~> 2.0.1"
 gem "redcarpet"
 # gem "nokogiri"
 # gem "albino"

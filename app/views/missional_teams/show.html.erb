@@ -1,7 +1,21 @@
-<h1><%= @missional_team.name.titleize %></h1>
-<p id="notice"><%= notice %></p>
+<h1>Missional Team</h1>
 
-<% if can? :manage, MissionalTeam %>
-<%= link_to 'Edit', edit_missional_team_path(@missional_team) %> |
-<%= link_to 'Back', manage_missional_teams_path %>
-<% end %>
+<p>
+  <b>Name</b><br>
+  <%= @missional_team.name %>
+</p>
+
+<p>
+  <b>Members</b><br>
+  <ul>
+  <% @missional_team.members.each do |member| %>
+  <li><%= member.name %></li>
+  <% end %>
+  </ul>
+</p>
+
+<div class="form-actions">
+  <%= link_to 'Back', manage_missional_teams_path, :class => 'btn'  %>
+  <%= link_to 'Edit', edit_missional_team_path(@missional_team), :class => 'btn' %>
+  <%= link_to 'Delete', missional_team_path(@missional_team), :method => 'delete', :confirm => 'Are you sure?', :class => 'btn btn-danger' %>
+</div>

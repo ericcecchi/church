@@ -1,26 +1,17 @@
-<div class="form-horizontal">
-<%= form_for(@missional_team) do |f| %>
-<% if @missional_team.errors.any? %>
-    <div class="alert alert-block alert-error">
-    <h3>The following errors need to be fixed:</h3>
-    <a class="close" data-dismiss="alert">×</a>
-    <ul>
-    <% @missional_team.errors.full_messages.each do |error| %>
-      <li><%= error %></li>
-    <% end%>
-    </ul>
-    </div>
-  <% end %>
-  
-  <div class="control-group">
-  <%= f.label :name, :class=>"control-label"%>
-  <div class="controls">
-  <%= f.text_field :name %>
-  </div>
-  </div>
+<%= form_for @missional_team, :html => { :class => 'form-horizontal' } do |f| %>
+  <fieldset>
+    <legend><%= controller.action_name.capitalize %> Missional Team</legend>
 
-  <div class="control-group controls">
-  <%= f.submit :class => "btn btn-success" %>
-  </div>
+    <div class="control-group">
+      <%= f.label :name, :class => 'control-label' %>
+      <div class="controls">
+        <%= f.text_field :name, :class => 'text_field' %>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <%= f.submit nil, :class => 'btn btn-primary' %>
+      <%= link_to 'Cancel', manage_missional_teams_path, :class => 'btn' %>
+    </div>
+  </fieldset>
 <% end %>
-</div>

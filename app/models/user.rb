@@ -8,8 +8,8 @@ class User
          :recoverable, :rememberable, :trackable, :validatable
          
   has_many :authentications, :dependent => :delete
-  has_one :community_group
-  has_and_belongs_to_many :missional_teams
+  belongs_to :community_group
+  belongs_to :missional_teams
   embeds_one :address
   has_and_belongs_to_many :roles
   
@@ -56,17 +56,17 @@ class User
   field :name,        :type => String, :null => false, :default => ""
   
   ## Church
-  field :birthday,          :type => Date
-  field :phone,             :type => Integer
-  field :twitter_username,  :type => String
-  field :facebook_url,      :type => String
-  field :user_info,         :type => String
+  field :birthday,          :type => Date, :null => false, :default => ""
+  field :phone,             :type => Integer, :null => false, :default => ""
+  field :twitter_username,  :type => String, :null => false, :default => ""
+  field :facebook_url,      :type => String, :null => false, :default => ""
   field :roles,             :type => Array, :null => false, :default => []
   
   validates_presence_of :display_name, :first_name, :last_name
   validates_uniqueness_of :display_name, :case_sensitive => false
   attr_accessible :display_name, :username, :email, :first_name, :last_name, 
-                  :password, :password_confirmation, :role_ids, :current_password, :remember_me
+                  :password, :password_confirmation, :role_ids, :current_password, :remember_me, 
+                  :birthday, :phone, :twitter_username,:facebook_url
   
   def admin_create
     self.display_name = self.first_name + self.last_name
@@ -98,6 +98,8 @@ class User
   def update_attributes(params)
     params.delete(:password) if params[:password].blank?
     params.delete(:password_confirmation) if params[:password].blank? and params[:password_confirmation].blank?
+    self.birthday = DateTime.civil(params['birthday(1i)'].to_i,params['birthday(2i)'].to_i,params['birthday(3i)'].to_i)
+    rescue ArgumentError
     super
   end
   
@@ -114,8 +116,13 @@ class User
       user_info.merge!(omniauth['extra']['user_hash'])
     end
     
-    self.twitter_username = user_info['nickname'] unless user_info['nickname'].blank?
-    self.facebook_url = user_info['url'] unless user_info['url'].blank?
+    if self.twitter_username.blank?
+      self.twitter_username = user_info['nickname'] unless user_info['nickname'].blank?
+    end
+    
+    if self.facebook_url.blank?
+      self.facebook_url = user_info['url'] unless user_info['url'].blank?
+    end
     
     if self.display_name.blank?
       self.display_name = user_info['nickname'] unless user_info['nickname'].blank?
@@ -135,7 +142,6 @@ class User
       self.email = user_info['email'] unless user_info['email'].blank?
     end
     
-#     self.password, self.password_confirmation = SecureRandom.hex(10)  
     self.confirmed_at, self.confirmation_sent_at = Time.now 
   end
 end

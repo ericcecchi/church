@@ -36,7 +36,6 @@ class CommunityGroupsController < ApplicationController
 
   def update
     @community_group = CommunityGroup.first(conditions: {name: params[:name]})
-
     respond_to do |format|
       if @community_group.update_attributes(params[:community_group])
         format.html { redirect_to manage_community_groups_path, notice: 'Community group was successfully updated.' }

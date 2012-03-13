@@ -1,8 +1,56 @@
-<h1>Profile</h1>
-<h2>@<%= @user.display_name %></h2>
-<p><%= @user.first_name + " " + @user.last_name %></p>
-<p><%= @user.email %></p>
-<p><%= @user.user_info %></p>
-<% if can? :update, @user %>
-<p><%= link_to "Edit info", edit_user_path(@user.username) %></p>
+<h1>@<%= @user.display_name %></h1>
+
+<p>
+  <b>Name</b><br>
+  <%= @user.name %>
+</p>
+
+<p>
+  <b>Email</b><br>
+  <%= @user.email %>
+</p>
+
+<p>
+  <b>Birthday</b><br>
+  <%= @user.birthday.to_formatted_s(:long) unless @user.birthday.blank? %>
+</p>
+
+<p>
+  <b>Phone</b><br>
+  <%= number_to_phone(@user.phone, :aea_code => true, :delimiter => ' ') %>
+</p>
+
+<p>
+  <b>Twitter</b><br>
+  <%= '@' + @user.twitter_username unless @user.twitter_username.blank? %>
+</p>
+
+<p>
+  <b>Facebook</b><br>
+  <%= '//' + @user.facebook_url unless @user.facebook_url.blank? %>
+</p>
+
+<p>
+  <b>Missional Teams</b><br>
+  <%= @user.missional_team_ids.join(", ").titleize %>
+</p>
+
+<p>
+  <b>Community Group</b><br>
+  <%= @user.community_group %>
+</p>
+
+<% if can? :manage, Role %>
+<p>
+  <b>Roles</b><br>
+  <%= @user.role_ids.join(", ").titleize %>
+</p>
 <% end %>
+
+<div class="form-actions">
+  <%= link_to 'Edit', edit_user_path(@user), :class => 'btn' %>
+  <% if can? :manage, User %>
+  <%= link_to 'Delete', user_path(@user), :method => 'delete', :confirm => 'Are you sure?', :class => 'btn btn-danger' %>
+  <%= link_to 'Back', manage_users_path, :class => 'btn'  %>
+  <% end %>
+</div>

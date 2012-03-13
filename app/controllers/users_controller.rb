@@ -2,9 +2,9 @@ class UsersController < ApplicationController
   # CanCan authorization for User class
   load_and_authorize_resource
  
-  def index
-    @users = User.accessible_by(current_ability, :index).limit(20)
-  end
+#   def index
+#     @users = User.accessible_by(current_ability, :index).limit(20)
+#   end
 
   def show
     @user = User.first(conditions: { username: params[:display_name].downcase })
@@ -46,6 +46,7 @@ class UsersController < ApplicationController
   
   def update
     @user = User.first(conditions: { username: params[:display_name].downcase })
+#     render json: params
     if @user.update_attributes(params[:user])
       if @user == current_user
         sign_in @user, :bypass => true # Bypass authentication in case password was changed

@@ -12,7 +12,7 @@
       <% User.asc(:name).each do |user| %>
         <tr>
           <td><%= link_to user.name, user_path(user.username) %></td>
-          <td><%= user.role_ids.sort.to_sentence.humanize %></td>
+          <td><%= user.role_ids.sort.join(', ').humanize %></td>
           <td><%= mail_to user.email, "Email" %></td>
           <td><%= link_to 'Edit', edit_user_path(user.username) %></td>
         </tr>
