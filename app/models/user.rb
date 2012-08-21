@@ -1,6 +1,7 @@
 class User
   include Mongoid::Document
-  before_save :save_username, :save_name
+  include Mongoid::Slug
+  before_save :set_username
   before_create :init_roles
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable,  :lockable, :timeoutable, :confirmable, :omniauthable
@@ -8,10 +9,9 @@ class User
          :recoverable, :rememberable, :trackable, :validatable
          
   has_many :authentications, :dependent => :delete
-  belongs_to :community_group
-  belongs_to :missional_teams
+  has_and_belongs_to_many :groups
   embeds_one :address
-  has_and_belongs_to_many :roles
+  belongs_to :role
   
   ## Database authenticatable
   field :email,              :type => String, :null => false, :default => ""
@@ -49,23 +49,23 @@ class User
   # field :authentication_token, :type => String
   
   ## Names
-  field :username,    :type => String, :null => false, :default => ""
+#   field :username,    :type => String, :null => false, :default => ""
+  field :username,:type => String, :null => false, :default => ""
+  slug :username
   field :display_name,:type => String, :null => false, :default => ""
   field :first_name,  :type => String, :null => false, :default => ""
   field :last_name,   :type => String, :null => false, :default => ""
-  field :name,        :type => String, :null => false, :default => ""
   
   ## Church
   field :birthday,          :type => Date, :null => false, :default => ""
   field :phone,             :type => Integer, :null => false, :default => ""
   field :twitter_username,  :type => String, :null => false, :default => ""
   field :facebook_url,      :type => String, :null => false, :default => ""
-  field :roles,             :type => Array, :null => false, :default => []
   
   validates_presence_of :display_name, :first_name, :last_name
   validates_uniqueness_of :display_name, :case_sensitive => false
   attr_accessible :display_name, :username, :email, :first_name, :last_name, 
-                  :password, :password_confirmation, :role_ids, :current_password, :remember_me, 
+                  :password, :password_confirmation, :role_id, :current_password, :remember_me, 
                   :birthday, :phone, :twitter_username,:facebook_url
   
   def admin_create
@@ -78,27 +78,27 @@ class User
   end
   
   def has_role? role
-    !!self.roles.first(conditions: {name: role.to_s})
+    !!self.role.name
   end
   
   def init_roles
-    self.role_ids << 'attender'
+    self.role = 'attender' if self.role.nil?
   end
   
   ## Use downcased username for better authentication and routes
-  def save_username
+  def set_username
     self.username = self.display_name.downcase
   end
   
   ## Concatentated name for easier printing
-  def save_name
-    self.name = self.first_name + ' ' + self.last_name
+  def name
+    self.first_name + ' ' + self.last_name
   end
   
   def update_attributes(params)
     params.delete(:password) if params[:password].blank?
     params.delete(:password_confirmation) if params[:password].blank? and params[:password_confirmation].blank?
-    self.birthday = DateTime.civil(params['birthday(1i)'].to_i,params['birthday(2i)'].to_i,params['birthday(3i)'].to_i)
+    self.birthday = Date.civil(params['birthday(1i)'].to_i,params['birthday(2i)'].to_i,params['birthday(3i)'].to_i)
     rescue ArgumentError
     super
   end

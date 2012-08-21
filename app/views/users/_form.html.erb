@@ -1,4 +1,4 @@
-<%= form_for @user, :html => { :class => 'form-horizontal' } do |f| %>
+<%= simple_form_for @user, :html => { :class => 'form-horizontal' } do |f| %>
   <fieldset>
     <legend><%= controller.action_name.capitalize %> User</legend>
   <% if not @user.errors.empty? %>
@@ -13,72 +13,22 @@
     </div>
   <% end %>
 
-  <div class="control-group">
-  <%= f.label :first_name, :class=>"control-label"%>
-  <div class="controls">
-  <%= f.text_field :first_name %>
-  </div>
-  </div>
+  <%= f.input :first_name %>
   
-  <div class="control-group">
-  <%= f.label :last_name, :class=>"control-label"%>
-  <div class="controls">
-  <%= f.text_field :last_name %>
-  </div>
-  </div>
+  <%= f.input :last_name %>
 
-  <div class="control-group">
-  <%= f.label :email, :class=>"control-label"%>
-  <div class="controls">
-  <%= f.email_field :email %>
-  </div>
-  </div>
+  <%= f.input :email %>
   
-  <div class="control-group">
-  <%= f.label :birthday, :class=>"control-label"%>
-  <div class="controls">
-  <%= date_select('user',:birthday, :prompt => true, :start_year => Date.today.year, :end_year => 1910) %>
-  </div>
-  </div>
+  <%= f.input(:birthday, as: :date, prompt: true, start_year: Date.today.year, end_year: 1910) %>
 
-  <div class="control-group">
-    <%= f.label :phone, :class => 'control-label' %>
-    <div class="controls">
-      <%= f.telephone_field :phone, :class => 'text_field' %>
-    </div>
-  </div>
+  <%= f.input :phone %>
 
-  <div class="control-group">
-    <%= f.label 'Twitter', :class => 'control-label' %>
-    <div class="controls">
-      <%= f.text_field :twitter_username, :class => 'text_field' %>
-    </div>
-  </div>
+  <%= f.input :twitter_username, label: 'Twitter' %>
 
-  <div class="control-group">
-    <%= f.label 'Facebook', :class => 'control-label' %>
-    <div class="controls">
-      <%= f.text_field :facebook_url, :class => 'text_field' %>
-    </div>
-  </div>
+  <%= f.input :facebook_url, label: 'Facebook' %>
 
   <% if can? :manage, Role %>
-  <div class="control-group">
-  <%= f.label :roles, :class=>"control-label" %>
-  <div class="controls">  
-    <% Role.asc(:name).each do |role| %>
-      <% if role.name == 'attender'
-           next
-         end %>
-      <%= check_box_tag "user[role_ids][]", role.name, @user.roles.include?(role) %>  
-      <%= if role.name != 'cgl' and role.name != 'mtl'
-            role.name.humanize 
-          else
-            role.name.upcase 
-          end %>  
-  <% end %>
-  </div>
-  </div>
+	  <%= f.input :role_id, label: 'Role', collection: Role.all, as: :radio_buttons %>
   <% end %>
 
     <div class="form-actions">

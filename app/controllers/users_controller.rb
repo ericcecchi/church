@@ -1,20 +1,20 @@
 class UsersController < ApplicationController
   # CanCan authorization for User class
-  load_and_authorize_resource
+  load_and_authorize_resource :find_by => :slug
  
 #   def index
 #     @users = User.accessible_by(current_ability, :index).limit(20)
 #   end
 
   def show
-    @user = User.first(conditions: { username: params[:display_name].downcase })
+    @user = User.find_by_slug params[:id]
     if @user.nil?
       redirect_to root_path, alert: "The page you are looking for does not exist."
     end
   end
  
   def edit
-    @user = User.first(conditions: { username: params[:display_name].downcase })
+    @user = User.find_by_slug params[:id]
   end
   
   def new
@@ -26,7 +26,7 @@ class UsersController < ApplicationController
   end
   
   def destroy
-    @user = User.first(conditions: { username: params[:display_name].downcase })
+    @user = User.find_by_slug params[:id]
     if @user.destroy
       redirect_to manage_users_path, notice: "Successfully deleted user."
     end
@@ -45,7 +45,7 @@ class UsersController < ApplicationController
   end
   
   def update
-    @user = User.first(conditions: { username: params[:display_name].downcase })
+    @user = User.find_by_slug params[:id]
 #     render json: params
     if @user.update_attributes(params[:user])
       if @user == current_user

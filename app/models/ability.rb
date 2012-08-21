@@ -4,10 +4,11 @@ class Ability
     
   def initialize(user)
     @user = user || User.new # for guest
-    @user.roles.each { |role| send(role.name) }
 
-    if @user.roles.size == 0
-      can :read, :all #for guest without roles    
+    if @user.role.nil?
+      can :read, :all #for guest without roles
+    else
+	    send @user.role.name.to_sym 
     end
 
   end
@@ -18,30 +19,13 @@ class Ability
         user.try(:id) == @user.id
     end
   end
-  
-  def member
-    attender
-  
-  end
-  
-  def mtl
-    member
-  
-  end
-  
-  def cgl
-    member
-  
-  end
     
-  def elder_candidate
-    member
-  
+  def leader
+    attender
   end
-  
+
   def elder
-    member
-    can :manage, User
+    leader
   end
 
   def admin

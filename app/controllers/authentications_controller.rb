@@ -15,7 +15,7 @@ class AuthenticationsController < ApplicationController
     else
       @user = User.new
       @user.apply_omniauth(omniauth)
-      if user.save
+      if @user.save
         @user.authentications.create!(provider: omniauth['provider'], uid: omniauth['uid'])
         sign_in_and_redirect(:user, @user, notice: "Account created successfully.")
       else

@@ -12,38 +12,33 @@
 
 <p>
   <b>Birthday</b><br>
-  <%= @user.birthday.to_formatted_s(:long) unless @user.birthday.blank? %>
+  <%= @user.birthday.to_formatted_s(:long) if @user.birthday? %>
 </p>
 
 <p>
   <b>Phone</b><br>
-  <%= number_to_phone(@user.phone, :aea_code => true, :delimiter => ' ') %>
+  <%= number_to_phone(@user.phone, :delimiter => ' ') %>
 </p>
 
 <p>
   <b>Twitter</b><br>
-  <%= '@' + @user.twitter_username unless @user.twitter_username.blank? %>
+  <%= '@' + @user.twitter_username if @user.twitter_username? %>
 </p>
 
 <p>
   <b>Facebook</b><br>
-  <%= '//' + @user.facebook_url unless @user.facebook_url.blank? %>
+  <%= '/' + @user.facebook_url if @user.facebook_url? %>
 </p>
 
 <p>
-  <b>Missional Teams</b><br>
-  <%= @user.missional_team_ids.join(", ").titleize %>
-</p>
-
-<p>
-  <b>Community Group</b><br>
-  <%= @user.community_group %>
+  <b>Groups</b><br>
+  <%= comma_seperated_links_for @user.groups %>
 </p>
 
 <% if can? :manage, Role %>
 <p>
-  <b>Roles</b><br>
-  <%= @user.role_ids.join(", ").titleize %>
+  <b>Role</b><br>
+  <%= @user.role.name %>
 </p>
 <% end %>
 
