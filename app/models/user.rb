@@ -14,59 +14,67 @@ class User
   belongs_to :role
   
   ## Database authenticatable
-  field :email,              :type => String, :null => false, :default => ""
-  field :encrypted_password, :type => String, :null => false, :default => ""
+  field :email,              type: String, null: false, default: ""
+  field :encrypted_password, type: String, null: false, default: ""
 
   ## Recoverable
-  field :reset_password_token,   :type => String
-  field :reset_password_sent_at, :type => Time
+  field :reset_password_token,   type: String
+  field :reset_password_sent_at, type: Time
 
   ## Rememberable
-  field :remember_created_at, :type => Time
+  field :remember_created_at, type: Time
 
   ## Trackable
-  field :sign_in_count,      :type => Integer, :default => 0
-  field :current_sign_in_at, :type => Time
-  field :last_sign_in_at,    :type => Time
-  field :current_sign_in_ip, :type => String
-  field :last_sign_in_ip,    :type => String
+  field :sign_in_count,      type: Integer, default: 0
+  field :current_sign_in_at, type: Time
+  field :last_sign_in_at,    type: Time
+  field :current_sign_in_ip, type: String
+  field :last_sign_in_ip,    type: String
 
   ## Encryptable
-  # field :password_salt, :type => String
+  # field :password_salt, type: String
 
   ## Confirmable
-  field :confirmation_token,   :type => String
-  field :confirmed_at,         :type => Time
-  field :confirmation_sent_at, :type => Time
-  field :unconfirmed_email,    :type => String # Only if using reconfirmable
+  field :confirmation_token,   type: String
+  field :confirmed_at,         type: Time
+  field :confirmation_sent_at, type: Time
+  field :unconfirmed_email,    type: String # Only if using reconfirmable
 
   ## Lockable
-  # field :failed_attempts, :type => Integer, :default => 0 # Only if lock strategy is :failed_attempts
-  # field :unlock_token,    :type => String # Only if unlock strategy is :email or :both
-  # field :locked_at,       :type => Time
+  # field :failed_attempts, type: Integer, default: 0 # Only if lock strategy is :failed_attempts
+  # field :unlock_token,    type: String # Only if unlock strategy is :email or :both
+  # field :locked_at,       type: Time
 
   ## Token authenticatable
-  # field :authentication_token, :type => String
+  # field :authentication_token, type: String
   
   ## Names
-#   field :username,    :type => String, :null => false, :default => ""
-  field :username,:type => String, :null => false, :default => ""
+  field :username,		type: String, null: false, default: ""
   slug :username
-  field :display_name,:type => String, :null => false, :default => ""
-  field :first_name,  :type => String, :null => false, :default => ""
-  field :last_name,   :type => String, :null => false, :default => ""
+  field :display_name,type: String, null: false, default: ""
+  field :first_name,  type: String, null: false, default: ""
+  field :last_name,   type: String, null: false, default: ""
   
   ## Church
-  field :birthday,          :type => Date, :null => false, :default => ""
-  field :phone,             :type => Integer, :null => false, :default => ""
-  field :twitter_username,  :type => String, :null => false, :default => ""
-  field :facebook_url,      :type => String, :null => false, :default => ""
+  field :gender,  					type: String, null: false, default: ""
+  field :birthday,          type: Date, null: false, default: ""
+  field :phone,             type: Integer, null: false, default: ""
+  field :twitter_username,  type: String, null: false, default: ""
+  field :facebook_url,      type: String, null: false, default: ""
+  field :member,						type: Boolean, null: false, default: false
   
   validates_presence_of :display_name, :first_name, :last_name
   validates_uniqueness_of :display_name, :case_sensitive => false
   attr_accessible :display_name, :username, :email, :first_name, :last_name, 
                   :password, :password_confirmation, :role_id, :current_password, :remember_me, 
                   :birthday, :phone, :twitter_username,:facebook_url
+  
+  scope :members, where(member: true)
+  scope :leaders, where(:role_id.in => ['leader','elder','admin'])
+  scope :elders, where(:role_id => 'elder')
+  scope :admins, where(:role_id => 'admin')
+  
+  @@genders = ['Male','Female']
   
   def admin_create
     self.display_name = self.first_name + self.last_name
@@ -82,7 +90,7 @@ class User
   end
   
   def init_roles
-    self.role = 'attender' if self.role.nil?
+    self.role_id = :attender if self.role.nil?
   end
   
   ## Use downcased username for better authentication and routes

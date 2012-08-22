@@ -21,7 +21,7 @@ Church::Application.routes.draw do
   resources :authentications, path: '/users/auth'
   
   ## Admin
-  match '/admin', to: "admin#index"
+  match '/dashboard', to: "admin#index", as: 'dashboard'
   get '/admin/groups', as: 'manage_groups'
   get '/admin/users', as: "manage_users"
     

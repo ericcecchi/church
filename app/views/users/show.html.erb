@@ -1,4 +1,4 @@
-<h1>@<%= @user.display_name %></h1>
+<h1>@<%= @user.display_name %><% if @user.member %> <span class="label label-important">Member</span><% end %></h1>
 
 <p>
   <b>Name</b><br>
