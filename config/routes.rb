@@ -13,6 +13,7 @@ Church::Application.routes.draw do
 
   ## Docs
   get '/docs/rails'
+  get '/docs/future'
   get '/docs/admin_dash'
   
   ## Auth
@@ -21,7 +22,6 @@ Church::Application.routes.draw do
   resources :authentications, path: '/users/auth'
   
   ## Admin
-  match '/dashboard', to: "admin#index", as: 'dashboard'
   get '/admin/groups', as: 'manage_groups'
   get '/admin/users', as: "manage_users"
     
@@ -39,5 +39,6 @@ Church::Application.routes.draw do
   resources :roles
   
   ## Root
-  root to: "home#index"
+  match '/dashboard', to: "dashboard#index", as: 'dashboard'
+  root to: "dashboard#index"
 end

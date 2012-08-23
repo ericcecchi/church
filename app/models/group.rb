@@ -12,7 +12,7 @@ class Group
 
   def leaders
   	l = []
-    users.where(role_id: :leader).each do |u|
+    users.where(role: :leader).each do |u|
     	l << u.name
     end
     l

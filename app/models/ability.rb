@@ -8,7 +8,7 @@ class Ability
     if @user.role.nil?
       can :read, :all #for guest without roles
     else
-	    send @user.role.name.to_sym 
+	    send @user.role 
     end
 
   end

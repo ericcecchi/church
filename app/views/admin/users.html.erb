@@ -4,19 +4,17 @@
     <%= link_to "New User", new_user_path, class: 'btn btn-info pull-right' %>
     <h1>Manage Users</h1>
   	</div>
-    <table class="table table-striped table-bordered">
+    <table class="table">
       <thead>
-        <th>Name</th>
-        <th>Roles</th>
-        <th></th>
-        <th></th>
+        <th>Users</th>
       </thead>
       <% User.asc(:name).each do |user| %>
         <tr>
-          <td><%= link_to user.name, user_path(user.username) %><% if user.member %> <span class="label label-important">Member</span><% end %></td>
-          <td><%= user.role.name %></td>
-          <td><%= mail_to user.email, "Email" %></td>
-          <td><%= link_to 'Edit', edit_user_path(user.username) %></td>
+          <td><%= link_to user.name, user_path(user.username) %>
+          <% if user.member %> <span class="label label-important">Member</span><% end %>
+          <% if user.role == :leader %> <span class="label label-success">Leader</span><% end %>
+          <% if user.role == :elder %> <span class="label label-inverse ">Elder</span><% end %>
+          </td>
         </tr>
       <% end %>
     </table>

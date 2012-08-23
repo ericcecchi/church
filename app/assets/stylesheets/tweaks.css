@@ -1,1 +1,19 @@
-h1, h2 {margin: 0 0 10px;}
+h1, h2 { margin: 0 0 10; }
+.bignum { display: block; font-weight: bold; font-size: 4em; line-height: normal;}
+.bignum:hover { text-decoration: none; }
+.center { text-align: center; }
+.progress.member { margin-bottom: 0px; }
+.btn { margin-bottom: 6px; }
+
+body > .navbar .brand {
+  font-weight: bold;
+  color: #000;
+  text-shadow: 0 1px 0 rgba(255,255,255,.1), 0 0 30px rgba(255,255,255,.125);
+  -webkit-transition: all .2s linear;
+     -moz-transition: all .2s linear;
+          transition: all .2s linear;
+}
+body > .navbar .brand:hover {
+  text-decoration: none;
+  text-shadow: 0 1px 0 rgba(255,255,255,.1), 0 0 30px rgba(255,255,255,.4);
+}

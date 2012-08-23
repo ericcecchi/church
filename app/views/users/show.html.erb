@@ -1,8 +1,13 @@
-<h1>@<%= @user.display_name %><% if @user.member %> <span class="label label-important">Member</span><% end %></h1>
-
+<h1>
+<%= @user.name %>
+<% if @user.member %> <span class="label label-important">Member</span><% end %>
+<% if @user.role == :leader %> <span class="label label-success">Leader</span><% end %>
+<% if @user.role == :elder %> <span class="label label-inverse ">Elder</span><% end %>
+</h1>
+<img src="http://placehold.it/140x140" class="img-rounded">
 <p>
-  <b>Name</b><br>
-  <%= @user.name %>
+  <b>Username</b><br>
+  <%= @user.display_name %>
 </p>
 
 <p>
@@ -11,8 +16,8 @@
 </p>
 
 <p>
-  <b>Birthday</b><br>
-  <%= @user.birthday.to_formatted_s(:long) if @user.birthday? %>
+  <b>Age</b><br>
+  <%= @user.age %>
 </p>
 
 <p>
@@ -38,7 +43,7 @@
 <% if can? :manage, Role %>
 <p>
   <b>Role</b><br>
-  <%= @user.role.name %>
+  <%= @user.role %>
 </p>
 <% end %>
 

@@ -18,8 +18,8 @@
   <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
 </head>
 <body>
-<%= render :partial => "layouts/header" %>
 
+<%= render :partial => "layouts/header" %>
 <div class="container">
 <% if notice %>
 <div class="alert alert-block alert-info">
@@ -36,5 +36,6 @@
 <%= yield %>
 <%= render :partial => "layouts/footer" %>
 </div>
+<script>jQuery('a.bignum').typeButter();</script>
 </body>
 </html>

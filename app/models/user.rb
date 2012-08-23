@@ -2,7 +2,6 @@ class User
   include Mongoid::Document
   include Mongoid::Slug
   before_save :set_username
-  before_create :init_roles
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable,  :lockable, :timeoutable, :confirmable, :omniauthable
   devise :database_authenticatable, :registerable,
@@ -11,7 +10,6 @@ class User
   has_many :authentications, :dependent => :delete
   has_and_belongs_to_many :groups
   embeds_one :address
-  belongs_to :role
   
   ## Database authenticatable
   field :email,              type: String, null: false, default: ""
@@ -62,35 +60,48 @@ class User
   field :twitter_username,  type: String, null: false, default: ""
   field :facebook_url,      type: String, null: false, default: ""
   field :member,						type: Boolean, null: false, default: false
+  field :role,      				type: Symbol, null: false, default: :attender
   
-  validates_presence_of :display_name, :first_name, :last_name
+  validates_presence_of :first_name, :last_name
   validates_uniqueness_of :display_name, :case_sensitive => false
   attr_accessible :display_name, :username, :email, :first_name, :last_name, 
-                  :password, :password_confirmation, :role_id, :current_password, :remember_me, 
-                  :birthday, :phone, :twitter_username,:facebook_url
+                  :password, :password_confirmation, :current_password, :remember_me, 
+                  :birthday, :phone, :twitter_username,:facebook_url, :role
   
   scope :members, where(member: true)
-  scope :leaders, where(:role_id.in => ['leader','elder','admin'])
-  scope :elders, where(:role_id => 'elder')
-  scope :admins, where(:role_id => 'admin')
+  scope :leaders, where(:role.in => [:leader,:elder,:admin])
+  scope :elders, where(:role => :elder)
+  scope :admins, where(:role => :admin)
   
   @@genders = ['Male','Female']
+  @@roles = [:admin,:elder,:leader,:attender]
+  
+  def self.genders
+  	@@genders
+  end
+  
+  def self.roles
+  	@@roles
+  end
   
   def admin_create
     self.display_name = self.first_name + self.last_name
     self.password = Digest::SHA1.hexdigest Time.now.to_s
   end
   
+  def age
+	  unless self.birthday.nil?
+		  now = Time.now.utc.to_date
+		  now.year - self.birthday.year - ((now.month > self.birthday.month || (now.month == self.birthday.month && now.day >= self.birthday.day)) ? 0 : 1)
+		end
+	end
+  
   def to_param
     username
   end
   
   def has_role? role
-    !!self.role.name
-  end
-  
-  def init_roles
-    self.role_id = :attender if self.role.nil?
+    !!self.role
   end
   
   ## Use downcased username for better authentication and routes
@@ -107,6 +118,9 @@ class User
     params.delete(:password) if params[:password].blank?
     params.delete(:password_confirmation) if params[:password].blank? and params[:password_confirmation].blank?
     self.birthday = Date.civil(params['birthday(1i)'].to_i,params['birthday(2i)'].to_i,params['birthday(3i)'].to_i)
+    if params[:role_id]
+    	Role.find(params[:role_id]).users << self
+    end
     rescue ArgumentError
     super
   end
@@ -124,30 +138,30 @@ class User
       user_info.merge!(omniauth['extra']['user_hash'])
     end
     
-    if self.twitter_username.blank?
-      self.twitter_username = user_info['nickname'] unless user_info['nickname'].blank?
+    if self.twitter_username.blank? && user_info['nickname']
+      self.twitter_username = user_info['nickname']
     end
     
-    if self.facebook_url.blank?
-      self.facebook_url = user_info['url'] unless user_info['url'].blank?
+    if self.facebook_url.blank? && user_info['url']
+      self.facebook_url = user_info['url']
     end
     
-    if self.display_name.blank?
-      self.display_name = user_info['nickname'] unless user_info['nickname'].blank?
+    if self.display_name.blank? && user_info['nickname']
+      self.display_name = user_info['nickname']
     end
     
-    if self.first_name.blank?
-      self.first_name = user_info['name'].split[0] unless user_info['name'].blank?
+    if self.first_name.blank? && user_info['name']
+      self.first_name = user_info['name'].split[0] 
       self.first_name = user_info['first_name'] unless user_info['first_name'].blank?
     end
     
-    if self.last_name.blank?
-      self.last_name = user_info['name'].split[1] unless user_info['name'].blank?
+    if self.last_name.blank? && user_info['name']
+      self.last_name = user_info['name'].split[1]
       self.last_name = user_info['last_name'] unless user_info['last_name'].blank?
     end
     
-    if self.email.blank?
-      self.email = user_info['email'] unless user_info['email'].blank?
+    if self.email.blank? && user_info['email']
+      self.email = user_info['email']
     end
     
     self.confirmed_at, self.confirmation_sent_at = Time.now 

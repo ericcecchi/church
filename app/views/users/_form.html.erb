@@ -27,8 +27,8 @@
 
   <%= f.input :facebook_url, label: 'Facebook' %>
 
-  <% if can? :manage, Role %>
-	  <%= f.input :role_id, label: 'Role', collection: Role.all, as: :radio_buttons %>
+  <% if can? :manage, :roles %>
+	  <%= f.input :role, label: 'Role', collection: User.roles, as: :radio_buttons %>
   <% end %>
 
     <div class="form-actions">

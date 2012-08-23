@@ -21,8 +21,8 @@ namespace :db do
 		puts "Adding a bunch of fake users..."
     require 'faker'
 
-    @genders = ["Male","Female"]
-    @roles = ["admin","elder","leader","attender"]
+    @genders = User.genders
+    @roles = User.roles
     @probability = [0.02,0.05,0.23,0.7]
 
     def randomDate(params={})
@@ -76,9 +76,9 @@ namespace :db do
         :accepts_terms_and_conditions => true,
         :gender => @genders.sample,
         :email => Faker::Internet.email,
-        :role_id => r,
+        :role => r,
       )
-      if r == 'attender'
+      if r == :attender
       	u.member = [true,false].sample
       else
         u.member = true
