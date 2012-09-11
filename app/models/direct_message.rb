@@ -1,0 +1,2 @@
+class DirectMessage < Message
+end

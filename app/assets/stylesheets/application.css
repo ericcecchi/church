@@ -10,7 +10,5 @@
  *
  *= require_self
  *= require bootstrap.min
- *= require bootstrap-responsive.min
- *= require bootstrap_and_overrides
  *= require_tree
 */

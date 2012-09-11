@@ -1,0 +1,11 @@
+= simple_form_for @group, :html => { :class => 'form-horizontal' } do |f|
+  legend
+    = controller.action_name.capitalize
+    | Group
+  = f.input :name
+  = f.input :type, collection: ["General","Community Group","Missional Team"], input_html: {class: "chzn-select", "data-placeholder" => "Select a group type"}
+  = f.input :leader_ids, :label => 'Leaders', collection: User.all, input_html: { multiple: true, class: "chzn-select span6", "data-pre" => @group.leaders.map(&:token_inputs).to_json, "data-placeholder" => "Start typing someone's name" }
+  = f.input :member_ids, :label => 'Members', collection: User.all, input_html: { multiple: true, class: "chzn-select span6", "data-pre" => @group.members.map(&:token_inputs).to_json, "data-placeholder" => "Start typing someone's name" }
+  .form-actions
+    = f.button :submit, :class => 'btn btn-primary'
+    = link_to 'Cancel', manage_groups_path, :class => 'btn'

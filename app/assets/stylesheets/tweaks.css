@@ -1,11 +1,27 @@
+body { padding-top: 60px; font-family: Helvetica; }
+
+@media (max-width: 979px) { body { padding-top: 0px; } }
+
 h1, h2 { margin: 0 0 10; }
-.bignum { display: block; font-weight: bold; font-size: 4em; line-height: normal;}
+h2.title { margin-bottom: 9px; font-size: 24px; line-height: 30px; font-weight: normal; }
+article header { margin-bottom: 20px; }
+article header .title { margin-bottom: 0px; font-size: 24px; line-height: normal; font-weight: normal; }
+article header small { line-height: 20px; color: #999; }
+.bignum { display: block; font-weight: bold; font-size: 4em; line-height: normal; }
 .bignum:hover { text-decoration: none; }
 .center { text-align: center; }
 .progress.member { margin-bottom: 0px; }
-.btn { margin-bottom: 6px; }
+/* .btn { margin-bottom: 6px; } */
+.unread { font-weight: bold; }
+.form-modal { margin: 0; }
+.nav-user { font-size: 30px; vertical-align: middle; }
 
-body > .navbar .brand {
+@media (min-width: 780px) { 
+	.modal.large{ width: 780px; margin-left: -390px; /* - width/2 */ } 
+	.form-modal input[type="text"], .form-modal textarea, .form-modal .chzn-container-multi { width: 735px !important; }
+}
+
+body > .navbar .brand-dark {
   font-weight: bold;
   color: #000;
   text-shadow: 0 1px 0 rgba(255,255,255,.1), 0 0 30px rgba(255,255,255,.125);
@@ -13,7 +29,8 @@ body > .navbar .brand {
      -moz-transition: all .2s linear;
           transition: all .2s linear;
 }
-body > .navbar .brand:hover {
+
+body > .navbar .brand-dark:hover {
   text-decoration: none;
   text-shadow: 0 1px 0 rgba(255,255,255,.1), 0 0 30px rgba(255,255,255,.4);
 }

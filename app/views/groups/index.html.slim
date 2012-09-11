@@ -1,0 +1,27 @@
+.row-fluid
+  .span12
+    .page-header
+      = link_to "New Group", new_group_path, class: 'btn btn-primary pull-right'
+      h1 Community Groups
+    table.table
+      thead
+        th Name
+        th Leaders
+        th Members
+      - Group.where(type:"Community Group").asc(:name).each do |group|
+        tr
+          td= link_to group.name, group_path(group)
+          td= group.leader_names
+          td= group.members_count
+    .page-header
+      h1 Missional Teams
+    table.table
+      thead
+        th Name
+        th Leaders
+        th Members
+      - Group.where(type:"Missional Team").asc(:name).each do |team|
+        tr
+          td= link_to team.name, group_path(team)
+          td= team.leader_names
+          td= team.members_count

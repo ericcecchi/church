@@ -1,0 +1,7 @@
+h2 Forgot your password?
+= simple_form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post, class: 'form-horizontal' }) do |f|
+= devise_error_messages!
+= f.input :email, hint: "Use the email listed in your account. We will send you reset password instructions."
+.form-actions
+  = f.button :submit, "Submit"
+  = link_to 'Cancel', authentications_path, :class => 'btn'

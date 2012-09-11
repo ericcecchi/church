@@ -1,0 +1,11 @@
+article
+	header
+		h3.title= @discussion.title
+		small
+			| started 
+			=timeago @discussion.created_at
+			|  by 
+			a href=@discussion.sender_url
+				strong= @discussion.sender_name
+	
+	section= @discussion.markdowned

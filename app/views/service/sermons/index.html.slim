@@ -1,0 +1,13 @@
+h1 Listing service_sermons
+table
+  tr
+    th
+    th
+    th
+  - @service_sermons.each do |service_sermon|
+    tr
+      td= link_to 'Show', service_sermon
+      td= link_to 'Edit', edit_service_sermon_path(service_sermon)
+      td= link_to 'Destroy', service_sermon, confirm: 'Are you sure?', method: :delete
+br/
+= link_to 'New Sermon', new_service_sermon_path

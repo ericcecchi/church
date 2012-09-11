@@ -1,0 +1,64 @@
+p 
+  | Use 
+  a href="#" Markdown 
+  | for formatting, yo. 
+  a#mdExamplesLink data-target="#markdown_examples" data-toggle="collapse" href="#" Show examples. 
+
+#markdown_examples.collapse
+  table.table.table-bordered
+    thead
+      tr
+        th What you type
+        th What it will look like
+        
+    tbody
+      tr
+        td
+          pre
+            | # Heading 1
+              ## Heading 2
+              ### Heading 3
+        td
+          h1 Heading 1
+          h2 Heading 2
+          h3 Heading 3
+      tr
+        td
+          pre [Link](http://example.com/)
+        td
+          a href="http://example.com/" Link
+      tr
+        td
+          pre 
+            | *Italic*
+        td
+          em Italic
+      tr
+        td
+          pre 
+            | **Bold**
+        td
+          strong Bold
+      tr
+        td
+          pre 
+            | * Listed
+              * Items
+              
+              - Another
+              - List
+              
+        td
+          ul
+            li Listed
+            li Items
+          
+          ul
+            li Another
+            li List
+        tr
+          td
+            pre &gt; Block quote
+          td
+            blockquote
+              p Block quote

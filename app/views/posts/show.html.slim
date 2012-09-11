@@ -1,0 +1,6 @@
+div.row
+  = render 'layouts/sidebar'
+  
+  div.span9
+		table.table.table-striped.table-bordered
+			= render 'messages/message', @message.attributes.symbolize_keys

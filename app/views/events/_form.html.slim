@@ -1,0 +1,18 @@
+= simple_form_for @event, :html => {} do |f|
+  = f.input :title, label: false, input_html: {class: "span5", placeholder: "Title"}
+  = f.input :subtitle, label: false, input_html: {class: "span5", placeholder: "Subtitle"}
+  = f.input :description, label: false, as: :text, input_html: {class: "span5", rows: 12, placeholder: "Description"}
+  = f.input :date, as: :date, prompt: true, start_year: Date.today.year, end_year: 1910
+  = f.input :all_day, as: :boolean
+  = f.input :start_time, as: :time, prompt: true, ampm: true
+  = f.input :end_time, as: :time, prompt: true, ampm: true
+  //= f.input :appears, as: :date, prompt: true
+  //= f.input :appears, as: :time, prompt: true, ampm: true
+  //= f.input :expires, as: :date, prompt: true
+  //= f.input :expires, as: :time, prompt: true, ampm: true
+  = f.input :signup_url
+  = f.input :artwork_url
+  .form-actions
+    = f.button :submit, :class => 'btn-primary'
+    '
+    = link_to t('.cancel', :default => t("helpers.links.cancel")), events_path, :class => 'btn'

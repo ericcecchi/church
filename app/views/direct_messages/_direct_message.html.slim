@@ -1,0 +1,9 @@
+h2.title= @direct_message.title
+tr
+	td
+		span.pull-right
+			=timeago @direct_message.created_at
+		a href=@direct_message.sender_url
+			strong= @direct_message.sender_name
+tr
+	td= @direct_message.markdowned

@@ -1,0 +1,63 @@
+- model_class = Event
+div class="page-header"
+  h1=t '.title', :default => model_class.model_name.human
+
+p
+  strong= model_class.human_attribute_name(:_type) + ':'
+  br
+  = @event._type
+p
+  strong= model_class.human_attribute_name(:_id) + ':'
+  br
+  = @event._id
+p
+  strong= model_class.human_attribute_name(:title) + ':'
+  br
+  = @event.title
+p
+  strong= model_class.human_attribute_name(:subtitle) + ':'
+  br
+  = @event.subtitle
+p
+  strong= model_class.human_attribute_name(:description) + ':'
+  br
+  = @event.description
+p
+  strong= model_class.human_attribute_name(:date) + ':'
+  br
+  = @event.date
+p
+  strong= model_class.human_attribute_name(:all_day) + ':'
+  br
+  = @event.all_day
+p
+  strong= model_class.human_attribute_name(:start_time) + ':'
+  br
+  = @event.start_time
+p
+  strong= model_class.human_attribute_name(:end_time) + ':'
+  br
+  = @event.end_time
+p
+  strong= model_class.human_attribute_name(:appears) + ':'
+  br
+  = @event.appears
+p
+  strong= model_class.human_attribute_name(:expires) + ':'
+  br
+  = @event.expires
+p
+  strong= model_class.human_attribute_name(:signup_url) + ':'
+  br
+  = @event.signup_url
+p
+  strong= model_class.human_attribute_name(:artwork_url) + ':'
+  br
+  = @event.artwork_url
+
+.form-actions
+  = link_to t('.back', :default => t("helpers.links.back")), events_path, :class => 'btn'
+  '
+  = link_to t('.edit', :default => t("helpers.links.edit")), edit_event_path(@event), :class => 'btn'
+  '
+  = link_to t('.destroy', :default => t("helpers.links.destroy")), event_path(@event), :method => "delete", :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')), :class => 'btn btn-danger'

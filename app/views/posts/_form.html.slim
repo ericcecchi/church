@@ -1,0 +1,13 @@
+= simple_form_for @direct_message, :html => { :class => "form-horizontal" } do |f|
+  = f.input :recipient_ids, :label => 'To', collection: User.all, input_html: { multiple: true, class: "chzn-select span6", "data-pre" => @direct_message.recipients.map(&:token_inputs).to_json }
+  = f.input :title, input_html: {class: "span6"}
+  = f.input :content, as: :text, input_html: {class: "span6"}
+  /= f.input :markdown, as: :boolean
+  /= f.input :twitter, as: :boolean, :item_wrapper_class => 'inline'
+  /= f.input :facebook, as: :boolean, :item_wrapper_class => 'inline'
+  /= f.input :email, as: :boolean, :item_wrapper_class => 'inline'
+  .form-actions
+    = f.button :submit, :class => 'btn-primary'
+    '
+    = link_to t('.cancel', :default => t("helpers.links.cancel")), direct_messages_path, :class => 'btn'
+     

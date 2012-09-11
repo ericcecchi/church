@@ -1,0 +1,47 @@
+h1
+  = @user.name
+  - if @user.member
+    span.label.label-important Member
+  - if @user.role == :leader
+    span.label.label-success Leader
+  - if @user.role == :elder
+    span.label.label-inverse Elder
+img.img-rounded src="http://placehold.it/140x140"
+p
+  b Username
+  br/
+  = @user.display_name
+p
+  b Email
+  br/
+  = @user.email
+p
+  b Age
+  br/
+  = @user.age
+p
+  b Phone
+  br/
+  = number_to_phone(@user.phone, :delimiter => ' ')
+p
+  b Twitter
+  br/
+  = '@' + @user.twitter_username if @user.twitter_username?
+p
+  b Facebook
+  br/
+  = '/' + @user.facebook_url if @user.facebook_url?
+p
+  b Groups
+  br/
+  = comma_seperated_links_for @user.groups
+- if can? :manage, Role
+  p
+    b Role
+    br/
+    = @user.role
+.form-actions
+  = link_to 'Edit', edit_user_path(@user), :class => 'btn'
+  - if can? :manage, User
+    = link_to 'Delete', user_path(@user), :method => 'delete', :confirm => 'Are you sure?', :class => 'btn btn-danger'
+    = link_to 'Back', manage_users_path, :class => 'btn'

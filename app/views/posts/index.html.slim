@@ -1,0 +1,9 @@
+= link_to 'New', new_group_discussion_path, class: 'btn btn-primary pull-right'
+h1 Discussions
+  
+table.table.table-hover    
+  tbody
+    - @messages.each do |message|
+      = render 'messages/inbox_messages', message.attributes.symbolize_keys
+      
+    = template_include_tag 'messages/inbox_messages'

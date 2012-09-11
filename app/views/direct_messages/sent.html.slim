@@ -1,0 +1,9 @@
+a.btn.btn-primary.pull-right role="button" href="#messageModal" data-toggle="modal" data-show="true" Compose
+h1 Sent Messages
+  
+table.table.table-hover    
+  tbody
+    - @direct_messages.each do |direct_message|
+      = render 'direct_messages/sent_direct_messages', direct_message.attributes.symbolize_keys
+      
+    = template_include_tag 'direct_messages/sent_direct_messages'

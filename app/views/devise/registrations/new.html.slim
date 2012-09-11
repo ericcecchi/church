@@ -1,0 +1,41 @@
+.form-horizontal
+  h1 Create account
+  p
+    | Use the form below to sign up for a chvrch account.
+    br/
+  = form_for @user do |f|
+    - if not @user.errors.empty?
+      .alert.alert-block.alert-error
+        h3 The following fields need to be updated to complete registration:
+        a.close data-dismiss="alert"
+        ul
+          - @user.errors.full_messages.each do |error|
+            li= error
+    .control-group
+      = f.label :first_name, :class=>"control-label"
+      .controls
+        = f.text_field :first_name
+    .control-group
+      = f.label :last_name, :class=>"control-label"
+      .controls
+        = f.text_field :last_name
+    .control-group
+      = f.label :username, :class=>"control-label"
+      .controls
+        = f.text_field :display_name
+    .control-group
+      = f.label :email, :class=>"control-label"
+      .controls
+        = f.email_field :email
+    .control-group
+      = f.label :password, :class=>"control-label"
+      .controls
+        = f.password_field :password
+        p.help-block Minimum 6 characters.
+    .control-group
+      = f.label :password_confirmation, :class=>"control-label"
+      .controls
+        = f.password_field :password_confirmation
+    .control-group.controls
+      = f.submit "Sign up", :class => "btn"
+= render "links"

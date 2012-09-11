@@ -1,0 +1,77 @@
+.navbar.navbar-fixed-top.navbar-inverse
+  .navbar-inner
+    .container
+      .nav-collapse= link_to "Simple Church", root_path, class: 'brand'
+      
+      ul.nav
+        - if user_signed_in?
+          li= link_to "Dashboard", dashboard_path
+          
+          li.dropdown
+            a.dropdown-toggle data-toggle="dropdown" href="#"
+              | Events 
+              span.badge.badge-success 3
+              b.caret
+              
+            ul.dropdown-menu
+              li= link_to "Add new", "#"
+              li= link_to "My calendar", "#"
+              li= link_to "This Sunday", "#"
+              
+          li.dropdown
+            a.dropdown-toggle data-toggle="dropdown" href="#"
+              | Groups 
+              - if current_user.unread_discussions_count > 0
+	              span.badge.badge-info= current_user.unread_discussions_count
+              b.caret
+              
+            ul.dropdown-menu
+              li= link_to "Add new", new_group_path
+              - current_user.groups.each do |group|
+                li= link_to group.name+' '+group.type, group_path(group)
+                
+          li.dropdown
+            a.dropdown-toggle data-toggle="dropdown" href="#"
+              | Messages 
+              - if current_user.unread_messages_count > 0
+              	span.badge.badge-important= current_user.unread_messages_count
+              b.caret
+              
+            ul.dropdown-menu
+              li
+                a href="#messageModal" data-toggle="modal" data-show="true" Compose
+              li= link_to "Inbox", inbox_path
+              li= link_to "Sent", sent_path
+                            
+      - if user_signed_in?
+        .nav-collapse
+          ul.nav.pull-right
+            =render '/users/search'
+            li.divider-vertical
+            li.dropdown
+              a.dropdown-toggle data-toggle="dropdown" href="#"
+                i.icon-user.nav-user
+                b.caret
+              ul.dropdown-menu
+                li= link_to "Your account", user_path(current_user.username)
+                li= link_to "Sign out", destroy_user_session_path, :method => :delete
+                - if can? :manage, :all
+                  li.dropdown-submenu
+                    a tabindex="-1" href="#" Admin
+                    ul.dropdown-menu
+                      - if can? :manage, :users
+                        li= link_to "Manage users", manage_users_path
+                        
+                      - if can? :manage, :groups
+                        li= link_to 'Manage groups', manage_groups_path
+                        
+                      li.dropdown-submenu
+                        a href="#" tabindex="-1" Docs
+                        ul.dropdown-menu
+                          li= link_to "Rails", docs_rails_path
+                          li= link_to "Future", docs_future_path
+                          li= link_to "Admin dash", docs_admin_dash_path                
+      - else
+        /! not signed in
+        ul.nav.pull-right
+          li= link_to "sign in", authentications_path

@@ -1,0 +1,9 @@
+= link_to 'New', new_group_discussion_path(@group), class: 'btn btn-primary pull-right'
+h1 Discussions
+  
+table.table.table-hover    
+  tbody
+    - @discussions.each do |discussion|
+      = render 'discussions/group_discussions', discussion.attributes.symbolize_keys
+      
+    = template_include_tag 'discussions/group_discussions'

@@ -1,0 +1,13 @@
+div.row
+  = render 'layouts/sidebar'
+  
+  div.span9
+    = link_to 'Compose', new_message_path, class: 'btn btn-primary pull-right'
+    h1 Sent
+      
+    table.table.table-hover    
+      tbody
+        - @messages.each do |message|
+          = render 'messages/sent_messages', message.attributes.symbolize_keys
+          
+        = template_include_tag 'messages/sent_messages'

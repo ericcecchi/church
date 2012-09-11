@@ -1,15 +1,26 @@
 class User
   include Mongoid::Document
   include Mongoid::Slug
-  before_save :set_username
+  include Mongoid::Timestamps
+  before_save :update_username, :update_name, :update_role
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable,  :lockable, :timeoutable, :confirmable, :omniauthable
-  devise :database_authenticatable, :registerable,
+  devise :database_authenticatable, # :registerable,
          :recoverable, :rememberable, :trackable, :validatable
          
   has_many :authentications, :dependent => :delete
-  has_and_belongs_to_many :groups
+  has_and_belongs_to_many :groups, inverse_of: :member
+  has_and_belongs_to_many :leader_groups, class_name: 'Group', inverse_of: :leaders
   embeds_one :address
+  has_many :sent_messages, class_name: 'Message', inverse_of: :sender
+  has_and_belongs_to_many :received_messages, class_name: 'Message', inverse_of: :recipients
+  has_many :read_receipts
+  
+  validates_presence_of :first_name, :last_name
+  validates_uniqueness_of :display_name, :case_sensitive => false
+  attr_accessible :display_name, :username, :email, :first_name, :last_name, 
+                  :password, :password_confirmation, :current_password, :remember_me, 
+                  :birthday, :phone, :twitter_username,:facebook_url, :role
   
   ## Database authenticatable
   field :email,              type: String, null: false, default: ""
@@ -52,6 +63,7 @@ class User
   field :display_name,type: String, null: false, default: ""
   field :first_name,  type: String, null: false, default: ""
   field :last_name,   type: String, null: false, default: ""
+  field :name,   			type: String, null: false, default: -> { "#{self.first_name} #{self.last_name}" }
   
   ## Church
   field :gender,  					type: String, null: false, default: ""
@@ -62,67 +74,22 @@ class User
   field :member,						type: Boolean, null: false, default: false
   field :role,      				type: Symbol, null: false, default: :attender
   
-  validates_presence_of :first_name, :last_name
-  validates_uniqueness_of :display_name, :case_sensitive => false
-  attr_accessible :display_name, :username, :email, :first_name, :last_name, 
-                  :password, :password_confirmation, :current_password, :remember_me, 
-                  :birthday, :phone, :twitter_username,:facebook_url, :role
-  
+  default_scope asc(:last_name, :first_name)
   scope :members, where(member: true)
-  scope :leaders, where(:role.in => [:leader,:elder,:admin])
-  scope :elders, where(:role => :elder)
-  scope :admins, where(:role => :admin)
+  scope :leaders, where(role: :leader)
+  scope :elders, where(role: :elder)
+  scope :admins, where(role: :admin)
   
+  ## Class variables + getters
   @@genders = ['Male','Female']
-  @@roles = [:admin,:elder,:leader,:attender]
-  
+  @@roles = [:admin,:elder,:attender]
+    
   def self.genders
   	@@genders
   end
   
   def self.roles
   	@@roles
-  end
-  
-  def admin_create
-    self.display_name = self.first_name + self.last_name
-    self.password = Digest::SHA1.hexdigest Time.now.to_s
-  end
-  
-  def age
-	  unless self.birthday.nil?
-		  now = Time.now.utc.to_date
-		  now.year - self.birthday.year - ((now.month > self.birthday.month || (now.month == self.birthday.month && now.day >= self.birthday.day)) ? 0 : 1)
-		end
-	end
-  
-  def to_param
-    username
-  end
-  
-  def has_role? role
-    !!self.role
-  end
-  
-  ## Use downcased username for better authentication and routes
-  def set_username
-    self.username = self.display_name.downcase
-  end
-  
-  ## Concatentated name for easier printing
-  def name
-    self.first_name + ' ' + self.last_name
-  end
-  
-  def update_attributes(params)
-    params.delete(:password) if params[:password].blank?
-    params.delete(:password_confirmation) if params[:password].blank? and params[:password_confirmation].blank?
-    self.birthday = Date.civil(params['birthday(1i)'].to_i,params['birthday(2i)'].to_i,params['birthday(3i)'].to_i)
-    if params[:role_id]
-    	Role.find(params[:role_id]).users << self
-    end
-    rescue ArgumentError
-    super
   end
   
   ## Apply user info returned from oauth
@@ -165,5 +132,81 @@ class User
     end
     
     self.confirmed_at, self.confirmation_sent_at = Time.now 
+  end
+  
+  def admin_create
+    self.display_name = self.first_name + self.last_name
+    self.password = Digest::SHA1.hexdigest Time.now.to_s
+  end
+  
+  def age
+	  unless self.birthday.nil?
+		  now = Time.now.utc.to_date
+		  now.year - self.birthday.year - ((now.month > self.birthday.month || (now.month == self.birthday.month && now.day >= self.birthday.day)) ? 0 : 1)
+		end
+	end
+	
+	def is_leader?
+		self.leader_groups > 0
+	end
+  
+  def has_role? role
+    !!self.role
+  end
+  
+  def to_param
+    username
+  end
+
+  def token_inputs
+    { :value => _id, :label => name, :username => username }
+  end
+
+  def unread_discussions_count
+  	c = 0
+  	self.received_messages.where(_type: 'Discussion').each { |d| c += 1 unless d.read_by?(self) }
+  	c
+  end
+
+  def unread_posts_count
+  	c = 0
+  	self.received_messages.where(_type: 'Post').each { |post| c += 1 unless post.read_by?(self) }
+  	c
+  end
+  
+  def unread_messages_count
+  	c = 0
+  	self.received_messages.where(_type: 'DirectMessage').each { |m| c += 1 unless m.read_by?(self) }
+  	c
+  end
+
+  def update_attributes(params)
+    params.delete(:password) if params[:password].blank?
+    params.delete(:password_confirmation) if params[:password].blank? and params[:password_confirmation].blank?
+    self.birthday = Date.civil(params['birthday(1i)'].to_i,params['birthday(2i)'].to_i,params['birthday(3i)'].to_i)
+#     if params[:role_id]
+#     	Role.find(params[:role_id]).users << self
+#     end
+#     rescue ArgumentError
+    super
+  end
+  
+  def update_name
+    self.name = "#{first_name} #{last_name}"
+  end
+  
+  def update_role
+  	if self.role == (:admin || :elder)
+  		return
+  	elsif self.leader_groups.count > 0
+  		self.role = :leader
+  	else
+  		self.role = :attender
+  	end
+  end
+  
+  ## Use downcased username for better authentication and routes
+  def update_username
+    self.username = self.display_name.downcase
   end
 end

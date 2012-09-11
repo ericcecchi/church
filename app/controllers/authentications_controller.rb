@@ -20,7 +20,7 @@ class AuthenticationsController < ApplicationController
         sign_in_and_redirect(:user, @user, notice: "Account created successfully.")
       else
         session[:omniauth] = omniauth.except('extra')
-        redirect_to new_user_registration_url
+	      redirect_to authentications_url, notice: "Sorry, your Simple Church account is not linked to the service you chose. Log in to link your accounts. If if you're not on Simple Church yet, request an invite!"
       end
     end
   end

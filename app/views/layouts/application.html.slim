@@ -1,0 +1,47 @@
+doctype html
+html
+  head
+    meta charset="utf-8"
+	  meta content="width=device-width initial-scale=1.0" name="viewport"
+    meta content="" name="description"
+    meta content="" name="author"
+    title Church
+    = stylesheet_link_tag "application", :media => "all"
+    = csrf_meta_tags
+    
+    /! Le HTML5 shim, for IE6-8 support of HTML5 elements
+    /![if lt IE 9]
+      <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    
+    /! Le fav and touch icons
+    link href="images/favicon.ico" rel="shortcut icon"
+    link href="images/apple-touch-icon.png" rel="apple-touch-icon"
+    link href="images/apple-touch-icon-72x72.png" rel="apple-touch-icon" sizes="72x72"
+    link href="images/apple-touch-icon-114x114.png" rel="apple-touch-icon" sizes="114x114"
+    
+  body
+    = render :partial => "layouts/header"
+    
+    .container
+      - if notice
+        .alert.alert-block.alert-info
+          a.close data-dismiss="alert" ×
+          = notice
+          
+      - if alert
+        .alert.alert-block.alert-error
+          a.close data-dismiss="alert" ×
+          = alert
+          
+      = yield
+      
+      = render :partial => "layouts/footer"
+
+    = javascript_include_tag "application"
+
+    javascript:
+      $('a.bignum').typeButter();
+      $('a.bignum').click(function(event) {
+      	event.preventDefault();
+      });
+      

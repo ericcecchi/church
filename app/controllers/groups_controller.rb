@@ -1,5 +1,5 @@
 class GroupsController < ApplicationController
-  load_and_authorize_resource :find_by => :slug
+  load_and_authorize_resource find_by: :slug
   respond_to :html, :json, :xml
   
   def index
@@ -9,6 +9,7 @@ class GroupsController < ApplicationController
 
   def show
     @group = Group.find_by_slug params[:id]
+    @discussion = Discussion.new
     respond_with @group
   end
 

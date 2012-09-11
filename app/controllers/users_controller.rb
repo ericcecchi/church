@@ -1,12 +1,26 @@
 class UsersController < ApplicationController
   # CanCan authorization for User class
-  load_and_authorize_resource :find_by => :slug
+  load_and_authorize_resource find_by: :slug
+	respond_to :html, :json
+  before_filter :get_user, except: [:index, :new, :create]
  
-#   def index
-#     @users = User.accessible_by(current_ability, :index).limit(20)
-#   end
+  def index
+  	unless params[:q].nil?
+    	@users = User.where(name: /#{Regexp.escape(params[:q])}/i)
+    else
+    	@users = User.all
+    end
+    respond_to do |format|
+      format.html
+			format.json { render :json => @users.map(&:token_inputs) }
+		end
+  end
+	
+	def show
+ 		respond_with @user
+	end
 
-  def show
+  def get_user
     @user = User.find_by_slug params[:id]
     if @user.nil?
       redirect_to root_path, alert: "The page you are looking for does not exist."
@@ -14,7 +28,7 @@ class UsersController < ApplicationController
   end
  
   def edit
-    @user = User.find_by_slug params[:id]
+ 		respond_with @user
   end
   
   def new
@@ -26,7 +40,6 @@ class UsersController < ApplicationController
   end
   
   def destroy
-    @user = User.find_by_slug params[:id]
     if @user.destroy
       redirect_to manage_users_path, notice: "Successfully deleted user."
     end

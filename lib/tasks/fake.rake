@@ -35,7 +35,7 @@ namespace :db do
     end
     
     def random
-      randint = ((self.count-1)*rand).floor
+      randint = ((self.count)*rand).floor
       return self[randint]
     end
 
@@ -85,6 +85,10 @@ namespace :db do
       end
       u.groups << Group.where(type: 'Community Group').random
       u.groups << Group.where(type: 'Missional Team').random
+      if r == :leader
+      	u.leader_groups << Group.all.random
+      end
+      
       u.address = a
       u.admin_create
       u.save!

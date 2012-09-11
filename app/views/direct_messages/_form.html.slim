@@ -1,0 +1,19 @@
+#messageModal.modal.hide.large tabindex="-1" role="dialog" aria-labelledby="messageModalLabel" aria-hidden="true"
+  .modal-header
+    button.close type="button" data-dismiss="modal" aria-hidden="true" ×
+    h3#messageModalLabel= @action + ' Message'
+  = simple_form_for @direct_message, html: { class: 'form-modal' } do |f|
+    .modal-body
+      = f.input :recipient_ids, label: false, collection: User.all, input_html: { multiple: true, class: "chzn-select", "data-pre" => @direct_message.recipients.map(&:token_inputs).to_json, "data-placeholder" => "Select recipients" }
+      = f.input :title, label: false, input_html: {class: "span5", placeholder: "Title"}
+      
+      = render 'layouts/markdown'
+      = f.input :content, as: :text, label: false, input_html: {class: "span5", rows: 12, placeholder: "Content"}
+      /= f.input :markdown, as: :boolean
+      /= f.input :twitter, as: :boolean, item_wrapper_class: 'inline'
+      /= f.input :facebook, as: :boolean, item_wrapper_class: 'inline'
+      /= f.input :email, as: :boolean, item_wrapper_class: 'inline'
+    .modal-footer
+      button.btn data-dismiss="modal" aria-hidden="true" Close
+      = f.button :submit, :class => 'btn-primary'
+     

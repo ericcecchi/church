@@ -1,0 +1,32 @@
+.page-header
+  = link_to 'Edit Group', edit_group_path(@group), class: 'btn pull-right'
+  h1
+    = @group.name
+    small= ' '+@group.type
+.row
+  .span9
+    a.btn.btn-primary.pull-right role="button" href="#discussionModal" data-toggle="modal" data-show="true" New
+    h2 Discussions
+    hr
+    
+    - @group.discussions.each do |discussion|
+      - @discussion = discussion
+      =render @discussion
+      footer= link_to "Read More...", group_discussion_path(@group,@discussion)      
+      hr
+      
+  .span3
+    h2.title.pull-right Who's in this group
+    table.table
+      tr
+        th.pull-right Leaders
+      - @group.leaders.each do |leader|
+        tr
+          td.pull-right= link_to leader.name, leader
+      tr
+        th.pull-right Members
+      - @group.members.each do |member|
+        tr
+          td.pull-right= link_to member.name, member
+ 
+=render 'discussions/new'

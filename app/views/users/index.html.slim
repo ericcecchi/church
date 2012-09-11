@@ -1,0 +1,20 @@
+.row-fluid
+  .span12
+    .page-header
+      = link_to "New User", new_user_path, class: 'btn btn-info pull-right'
+      h1 Manage Users
+    table.table
+      thead
+        th Users
+      - @users.each do |user|
+        tr
+          td
+            = link_to user.name+' ', user_path(user.username)
+            - if user.member
+              span.label.label-important Member
+              |  
+            - if user.role == :leader
+              span.label.label-success Leader
+              |  
+            - if user.role == :elder
+              span.label.label-inverse Elder

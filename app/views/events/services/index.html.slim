@@ -1,0 +1,13 @@
+h1 Listing event_services
+table
+  tr
+    th
+    th
+    th
+  - @event_services.each do |event_service|
+    tr
+      td= link_to 'Show', event_service
+      td= link_to 'Edit', edit_event_service_path(event_service)
+      td= link_to 'Destroy', event_service, confirm: 'Are you sure?', method: :delete
+br/
+= link_to 'New Service', new_event_service_path
