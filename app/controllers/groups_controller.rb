@@ -2,6 +2,16 @@ class GroupsController < ApplicationController
   load_and_authorize_resource find_by: :slug
   respond_to :html, :json, :xml
   
+  def events
+  	@events = []
+  	for g in current_user.groups
+  		for e in g.events
+  			@events << e
+  		end
+  	end
+  	respond_with @events.map(&:cal_json)
+  end
+  
   def index
     @groups = Group.all
     respond_with @groups

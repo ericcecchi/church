@@ -1,4 +1,25 @@
-- model_class = Event
-div class="page-header"
-  h1=t '.title', :default => t('helpers.titles.new', :model => model_class.model_name.human, :default => "New #{model_class.model_name.human}")
-= render :partial => "form"
+.widget
+	.widget-header
+	  h3 New Event
+	
+	.widget-content
+		= simple_form_for @event || Event.new, validate: true, remote: true, html: { class: 'form-horizontal', 'data-type' => :json} do |f|
+			= f.input :title, input_html: { placeholder: "Title", class: "span6" }
+			= f.input :subtitle, input_html: { placeholder: "Subtitle", class: "span6"  }
+			= f.input :description, as: :text, input_html: { rows: 12, placeholder: "Description", class: "span6"  }
+			= f.input :all_day, as: :boolean
+			= f.input :start_date, as: :pretty_date
+			= f.input :start_time, input_html: { class: "timepicker" }
+			= f.input :end_date, as: :pretty_date
+			= f.input :end_time, input_html: { class: "timepicker" }
+			//= f.input :appears, as: :date, prompt: true
+			//= f.input :appears, as: :time, prompt: true, ampm: true
+			//= f.input :expires, as: :date, prompt: true
+			//= f.input :expires, as: :time, prompt: true, ampm: true
+			= f.input :signup_url
+			= f.input :artwork_url
+			
+			div.control-group.controls
+				button.btn data-dismiss="modal" aria-hidden="true" Close
+				' 
+				= f.button :submit, class: 'btn-primary'

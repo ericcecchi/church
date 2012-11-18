@@ -15,6 +15,8 @@ class User
   has_many :sent_messages, class_name: 'Message', inverse_of: :sender
   has_and_belongs_to_many :received_messages, class_name: 'Message', inverse_of: :recipients
   has_many :read_receipts
+  has_many :invitations
+  has_many :created_events, class_name: 'Event'
   
   validates_presence_of :first_name, :last_name
   validates_uniqueness_of :display_name, :case_sensitive => false

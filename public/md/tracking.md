@@ -1,0 +1,32 @@
+# Individual Tracking
+- ID
+- date profile was created
+- date they first attended
+- Date last updated
+- Date last logged in
+- date membership was de-activated
+
+- Name (title, first, middle, last)
+- Status (active, inactive, college, family, friend)
+- Address, City, State, ZIP
+- Phone #
+- Texting?
+- email
+- birthdate
+- Facebook
+- Twitter
+- decision to follow Christ
+- talk to someone about Jesus
+- baptized
+- Community Group
+- missional teams
+- Membership:
+  - NCLunch: RSVP, attend
+  - Intro: RSVP, attend
+  - Pastor who will do interview
+  - we need to be emailed once they fill out their application 
+  - membership interview date
+  - membership date (ability to store scanned copy of signed covenant)
+- gender
+- marital status 
+- family

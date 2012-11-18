@@ -1,32 +1,60 @@
-.page-header
-  = link_to 'Edit Group', edit_group_path(@group), class: 'btn pull-right'
-  h1
-    = @group.name
-    small= ' '+@group.type
+h1.page-title
+	i.icon-group 
+	= @group.name
+	= ' '+@group.type
 .row
-  .span9
-    a.btn.btn-primary.pull-right role="button" href="#discussionModal" data-toggle="modal" data-show="true" New
-    h2 Discussions
-    hr
-    
-    - @group.discussions.each do |discussion|
-      - @discussion = discussion
-      =render @discussion
-      footer= link_to "Read More...", group_discussion_path(@group,@discussion)      
-      hr
-      
-  .span3
-    h2.title.pull-right Who's in this group
-    table.table
-      tr
-        th.pull-right Leaders
-      - @group.leaders.each do |leader|
-        tr
-          td.pull-right= link_to leader.name, leader
-      tr
-        th.pull-right Members
-      - @group.members.each do |member|
-        tr
-          td.pull-right= link_to member.name, member
+	.span9
+		.widget
+			.widget-header
+				i.icon-calendar.icon-large
+				h3 Events
+
+			.widget-content
+				- @group.events.each do |event|
+					- @event = event
+					=render @event
+					hr
+					
+		.widget
+			.widget-header
+				i.icon-comment.icon-large
+				h3 Discussions
+
+			.widget-content
+				- @group.discussions.each do |discussion|
+					- @discussion = discussion
+					=render @discussion
+					hr
+				
+	.span3
+		.widget.widget-plain
+			.widget-content
+				a.btn.btn-block.btn-large role="button" href=edit_group_path(@group)
+					i.icon-group
+					|  Edit Group
+				a.btn.btn-block.btn-success.btn-large role="button" href=new_group_event_path(@group)
+					i.icon-calendar
+					|  New Event
+				a.btn.btn-block.btn-primary.btn-large role="button" href="#discussionModal" data-toggle="modal" data-show="true" 
+					i.icon-comment
+					|  New Discussion
+		.widget
+			.widget-header
+				h3 Who's in this group
+			
+			.widget-content
+				table
+					tr
+						td 
+							strong Leaders
+					- @group.leaders.each do |leader|
+						tr
+							td= link_to leader.name, leader
+					tr
+						td 
+							strong Members
+					- @group.members.each do |member|
+						tr
+							td= link_to member.name, member
  
 =render 'discussions/new'

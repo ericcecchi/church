@@ -11,8 +11,9 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 //= require jquery
-//= require jquery_ujs
 //= require jquery-ui
+//= require jquery_ujs
 //= require bootstrap.min
+//= require rails.validations
 //= require typebutter.jquery.min
-//= require_tree .
+//= require_tree

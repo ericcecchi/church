@@ -1,18 +1,20 @@
-= simple_form_for @event, :html => {} do |f|
-  = f.input :title, label: false, input_html: {class: "span5", placeholder: "Title"}
-  = f.input :subtitle, label: false, input_html: {class: "span5", placeholder: "Subtitle"}
-  = f.input :description, label: false, as: :text, input_html: {class: "span5", rows: 12, placeholder: "Description"}
-  = f.input :date, as: :date, prompt: true, start_year: Date.today.year, end_year: 1910
-  = f.input :all_day, as: :boolean
-  = f.input :start_time, as: :time, prompt: true, ampm: true
-  = f.input :end_time, as: :time, prompt: true, ampm: true
-  //= f.input :appears, as: :date, prompt: true
-  //= f.input :appears, as: :time, prompt: true, ampm: true
-  //= f.input :expires, as: :date, prompt: true
-  //= f.input :expires, as: :time, prompt: true, ampm: true
-  = f.input :signup_url
-  = f.input :artwork_url
-  .form-actions
-    = f.button :submit, :class => 'btn-primary'
-    '
-    = link_to t('.cancel', :default => t("helpers.links.cancel")), events_path, :class => 'btn'
+= simple_form_for @event || Event.new, validate: true, remote: true, html: { class: 'form-horizontal', 'data-type' => :json} do |f|
+	= f.input :title, input_html: { placeholder: "Title", class: "span6" }
+	= f.input :subtitle, input_html: { placeholder: "Subtitle", class: "span6"  }
+	= f.input :description, as: :text, input_html: { rows: 12, placeholder: "Description", class: "span6"  }
+	= f.input :all_day, as: :boolean
+	= f.input :start_date, as: :pretty_date
+	= f.input :start_time, input_html: { class: "timepicker" }
+	= f.input :end_date, as: :pretty_date
+	= f.input :end_time, input_html: { class: "timepicker" }
+	//= f.input :appears, as: :date, prompt: true
+	//= f.input :appears, as: :time, prompt: true, ampm: true
+	//= f.input :expires, as: :date, prompt: true
+	//= f.input :expires, as: :time, prompt: true, ampm: true
+	= f.input :signup_url
+	= f.input :artwork_url
+	
+	div.control-group.controls
+		a.btn role="button" href="#calendar" data-toggle="tab" Cancel
+		' 
+		= f.button :submit, class: 'btn-primary'

@@ -1,5 +1,9 @@
 module ApplicationHelper
- def comma_seperated_links_for(list)
+	def active_class(controller)
+		params[:controller] == controller ? 'active' : ''
+	end
+	
+  def comma_seperated_links_for(list)
 
 #     raise TypeError, "parameter must be an array" unless list.is_a? Array 
     return if list.count == 0

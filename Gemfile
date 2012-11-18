@@ -69,3 +69,4 @@ gem "cancan"
 # gem 'troles'
 gem 'simple_form'
 gem 'faker'
+gem 'client_side_validations'

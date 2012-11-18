@@ -15,8 +15,10 @@ Church::Application.routes.draw do
   resources :direct_messages, path: 'messages'
 
   ## Groups
+  match '/groups/events', to: 'groups#events'
 	resources :groups do
 		resources :discussions
+		resources :events
 	end
 	
   ## Docs
@@ -28,9 +30,9 @@ Church::Application.routes.draw do
   match '/auth/:provider/callback', to: 'authentications#create'
   match '/auth/failure', to: 'authentications#index'
   resources :authentications, path: '/users/auth'
-    
+  
   ## Users
-  devise_for :users, path_names: { sign_up: "register", sign_in: "signin", sign_out: "signout" }, controllers: { registrations: 'accounts' }
+  devise_for :users, path: "", path_names: { sign_up: "register", sign_in: "signin", sign_out: "signout" }, controllers: { registrations: 'accounts' }
   resources :users
 # 
 #   get '/:display_name', to: 'users#show', as: :user

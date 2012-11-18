@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   # CanCan authorization for User class
   load_and_authorize_resource find_by: :slug
 	respond_to :html, :json
-  before_filter :get_user, except: [:index, :new, :create]
+  before_filter :get_user, only: [:show, :edit, :update, :destroy]
  
   def index
   	unless params[:q].nil?
@@ -58,8 +58,6 @@ class UsersController < ApplicationController
   end
   
   def update
-    @user = User.find_by_slug params[:id]
-#     render json: params
     if @user.update_attributes(params[:user])
       if @user == current_user
         sign_in @user, :bypass => true # Bypass authentication in case password was changed

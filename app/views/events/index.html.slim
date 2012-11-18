@@ -1,14 +1,16 @@
 .row
-	.span12
-		h1.year
-		h2.time
+	.span10
+		.widget.nopadding
+			.widget-header
+				i.icon-calendar
+				h3 Calendar
+			.widget-content.nopadding.tab-content
+				#calendar.fc.tab-pane.active.fade.in
+				#new.tab-pane.fade
+					=render 'events/new'
 	
-		h3.month
-	
-		table#calendar.calendar.table.table-bordered
-			thead
-			tbody
-		
-		input#last.btn type="button" name="last" value="Previous" />
-		input#current.btn type="button" name="current" value="Current" />
-		input#next.btn type="button" name="next" value="Next" />
+	.span2
+		a.btn.btn-block.btn-success.btn-large role="button" href="#new" data-toggle="tab"
+			i.icon-plus
+			|  New Event
+

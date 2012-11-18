@@ -1,10 +1,10 @@
 #discussionModal.modal.hide.large tabindex="-1" role="dialog" aria-labelledby="discussionModalLabel" aria-hidden="true"
-  .modal-header
+  header.modal-header
     button.close type="button" data-dismiss="modal" aria-hidden="true" ×
     h3#discussionModalLabel= "#{@action} Discussion"
   
   = simple_form_for [@group, @discussion], html: { class: 'form-modal' } do |f|
-    .modal-body
+    section.modal-body
       = f.input :title, label: false, input_html: {class: "span5", placeholder: "Title"}
       
       =render 'layouts/markdown'
@@ -14,6 +14,6 @@
       /= f.input :twitter, as: :boolean, item_wrapper_class: 'inline'
       /= f.input :facebook, as: :boolean, item_wrapper_class: 'inline'
       /= f.input :email, as: :boolean, item_wrapper_class: 'inline'
-    .modal-footer
+    footer.modal-footer
       button.btn data-dismiss="modal" aria-hidden="true" Close
       = f.button :submit, class: 'btn-primary'

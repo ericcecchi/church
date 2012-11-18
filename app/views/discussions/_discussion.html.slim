@@ -9,3 +9,4 @@ article
 				strong= @discussion.sender_name
 	
 	section= @discussion.markdowned
+	footer= link_to "Read More...", group_discussion_path(@discussion.group,@discussion)

@@ -1,8 +1,9 @@
-body { padding-top: 60px; font-family: Helvetica; }
+body { font-family: Helvetica; }
 
 @media (max-width: 979px) { body { padding-top: 0px; } }
 
 h1, h2 { margin: 0 0 10; }
+a:hover { text-decoration: none; }
 h2.title { margin-bottom: 9px; font-size: 24px; line-height: 30px; font-weight: normal; }
 article header { margin-bottom: 20px; }
 article header .title { margin-bottom: 0px; font-size: 24px; line-height: normal; font-weight: normal; }
@@ -14,11 +15,18 @@ article header small { line-height: 20px; color: #999; }
 /* .btn { margin-bottom: 6px; } */
 .unread { font-weight: bold; }
 .form-modal { margin: 0; }
-.nav-user { font-size: 30px; vertical-align: middle; }
+.form-modal input[type="text"], .form-modal textarea, .form-modal .chzn-container-multi { width: 98% !important; }
+.nav-user { font-size: 24px; vertical-align: middle; }
+.nopadding { padding-bottom: 0; padding-left: 0; padding-right: 0; }
+.table thead th { vertical-align: middle; }
+
+/* prevent scrolling while during modal */
+body.modal-open {
+  overflow: hidden;
+}
 
 @media (min-width: 780px) { 
 	.modal.large{ width: 780px; margin-left: -390px; /* - width/2 */ } 
-	.form-modal input[type="text"], .form-modal textarea, .form-modal .chzn-container-multi { width: 735px !important; }
 }
 
 body > .navbar .brand-dark {

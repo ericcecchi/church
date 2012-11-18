@@ -8,6 +8,7 @@ class Group
   has_and_belongs_to_many :members, class_name: 'User'
   has_and_belongs_to_many :leaders, class_name: 'User', inverse_of: :leader_groups
   has_many :discussions
+  has_many :events
   
   validates_presence_of :name, :type
   validates_uniqueness_of :name

@@ -1,0 +1,11 @@
+article
+	header
+		a href=url_for(@event)
+			h3.title
+				small= @event.start.strftime("%b %d")
+				br
+				= @event.title
+		small
+			|  by 
+			a href=url_for(@event.creator)
+				strong= @event.creator_name
